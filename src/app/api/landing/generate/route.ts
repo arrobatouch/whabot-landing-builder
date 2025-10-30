@@ -1539,487 +1539,538 @@ function generateSmartBusinessInfo(prompt: string): BusinessInfo {
   return result
 }
 
-// Función para generar bloques básicos sin IA (fallback completo)
-function generateBasicBlocks(prompt: string, businessInfo: BusinessInfo, businessImages: { [key: string]: string }): GeneratedBlock[] {
-  console.log('Generating basic blocks without AI...')
+// Función para generar bloques específicos y detallados según el tipo de negocio
+function generateDetailedBlocks(prompt: string, businessInfo: BusinessInfo, businessImages: { [key: string]: string }): GeneratedBlock[] {
+  console.log('Generating detailed blocks for business:', businessInfo.businessType)
   
-  // Extraer palabras clave básicas del prompt
-  const keywords = prompt.toLowerCase().split(' ')
-  const industryKeywords = ['restaurante', 'comida', 'nutricionista', 'cursos', 'programación', 'diseño', 'tienda', 'servicios']
-  
-  let detectedIndustry = 'general'
-  for (const keyword of industryKeywords) {
-    if (keywords.includes(keyword)) {
-      detectedIndustry = keyword
-      break
-    }
-  }
-  
-  // Ajustar información del negocio basado en el prompt
-  const adjustedBusinessInfo = {
-    ...businessInfo,
-    industry: detectedIndustry,
-    businessType: detectedIndustry === 'general' ? 'Mi Negocio' : 
-                   detectedIndustry === 'restaurante' ? 'Restaurante' :
-                   detectedIndustry === 'nutricionista' ? 'Nutricionista' :
-                   detectedIndustry === 'cursos' ? 'Academia Online' : 'Mi Negocio'
-  }
-  
-  // Generar bloques básicos en el orden especificado por el usuario
   const basicBlocks: GeneratedBlock[] = []
   
-  // 0 - Barra de navegación (siempre primero)
+  // 1 - Hero slide interactivo (posición 0)
   basicBlocks.push({
-    type: 'navigation',
+    type: 'hero-slide',
     content: {
-      logoPosition: 'left' as const,
-      menuPosition: 'right' as const,
-      companyName: adjustedBusinessInfo.businessType,
-      customButtons: [
-        { id: 'btn-1', label: 'Inicio', url: '#' },
-        { id: 'btn-2', label: 'Servicios', url: '#' },
-        { id: 'btn-3', label: 'Contacto', url: '#' }
-      ],
-      showLandings: true,
-      backgroundColor: '#ffffff',
-      textColor: '#000000',
-      sticky: false,
-      shadow: true
+      slides: [{
+        id: 'slide-1',
+        backgroundImage: businessImages?.hero || businessImages?.background || 'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=1200&h=600&fit=crop',
+        title: businessInfo.businessType,
+        subtitle: businessInfo.uniqueSellingProposition || `Líder en ${businessInfo.industry}`,
+        buttonText: businessInfo.callToAction || 'Conocer Más',
+        buttonType: 'external' as const,
+        buttonTarget: '#contacto',
+        textColor: 'light' as const,
+        imageFilter: 'none' as const
+      }],
+      navigationStyle: 'arrows' as const,
+      autoPlay: true,
+      autoPlayInterval: 5000,
+      transitionType: 'fade' as const,
+      transitionSpeed: 500,
+      height: 'viewport' as const,
+      marginTop: 0,
+      marginBottom: 0,
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-0',
+        paddingX: 'px-0'
+      }
     },
     position: 0
   })
   
-  // 1 - Hero slide interactivo
-  basicBlocks.push({
-    type: 'hero-slide',
-    content: {
-      title: `Descubre ${adjustedBusinessInfo.industry} de Calidad`,
-      subtitle: adjustedBusinessInfo.businessType,
-      description: `Ofrecemos los mejores servicios de ${adjustedBusinessInfo.industry} con calidad garantizada.`,
-      backgroundImage: businessImages?.hero || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop',
-      slides: [
-        {
-          title: 'Innovación',
-          description: 'Lo último en tecnología y diseño',
-          backgroundImage: businessImages?.hero || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop'
-        },
-        {
-          title: 'Calidad',
-          description: 'Estándares superiores en cada producto',
-          backgroundImage: businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=1200&h=600&fit=crop'
-        }
-      ],
-      autoPlay: true,
-      interval: 5000
-    },
-    position: 1
-  })
-  
-  // 2 - Bloque refuerzo
+  // 2 - Bloque refuerzo (posición 1)
   basicBlocks.push({
     type: 'reinforcement',
     content: {
-      title: '¿Por qué Elegirnos?',
-      description: `En ${adjustedBusinessInfo.businessType} nos destacamos por ofrecer ${adjustedBusinessInfo.industry.toLowerCase()} de la más alta calidad con un servicio excepcional que supera todas tus expectativas.`,
+      title: `Más de 10 años de experiencia en ${businessInfo.industry}`,
+      description: `En ${businessInfo.businessType} cuidamos cada detalle: calidad, atención directa y ambientes profesionales durante todo el año.`,
       features: [
         {
-          title: 'Calidad Superior',
-          description: `Productos de ${adjustedBusinessInfo.industry.toLowerCase()} de la más alta calidad`
+          title: 'Calidad Profesional',
+          description: `${businessInfo.industry.charAt(0).toUpperCase() + businessInfo.industry.slice(1)} de la más alta calidad`
         },
         {
-          title: 'Servicio Excepcional',
-          description: 'Atención personalizada y soporte dedicado'
-        },
-        {
-          title: 'Experiencia Profesional',
-          description: 'Equipo experto con años de experiencia en el sector'
+          title: 'Atención Personalizada',
+          description: 'Trato directo y servicio dedicado a cada cliente'
         },
         {
           title: 'Innovación Constante',
           description: 'Siempre a la vanguardia de las últimas tendencias'
         }
-      ]
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
-    position: 2
+    position: 1
   })
   
-  // 3 - Características ppales
+  // 3 - Características ppales (posición 2)
   basicBlocks.push({
     type: 'features',
     content: {
       title: 'Características Principales',
-      subtitle: `Por qué elegir ${adjustedBusinessInfo.businessType}`,
+      subtitle: `Lo que nos hace únicos en ${businessInfo.industry}`,
       features: [
         {
           icon: '⭐',
-          title: 'Calidad Superior',
-          description: `Productos de ${adjustedBusinessInfo.industry} de la más alta calidad`
+          title: 'Excelencia',
+          description: `Estándares superiores en ${businessInfo.industry.toLowerCase()}`
         },
         {
-          icon: '🚀',
-          title: 'Rápido y Eficiente',
-          description: 'Servicio ágil y resultados inmediatos'
+          icon: '🎯',
+          title: 'Enfoque',
+          description: `Especializados en ${businessInfo.targetAudience || 'nuestros clientes'}`
+        },
+        {
+          icon: '📍',
+          title: 'Ubicación',
+          description: businessInfo.location || 'Ubicación estratégica'
         },
         {
           icon: '💎',
-          title: 'Profesionalismo',
-          description: 'Equipo experto dedicado a tu satisfacción'
+          title: 'Calidad',
+          description: businessInfo.uniqueSellingProposition || 'Compromiso con la excelencia'
+        },
+        {
+          icon: '🚀',
+          title: 'Innovación',
+          description: 'Tecnología y métodos modernos'
         },
         {
           icon: '🛡️',
-          title: 'Garantía',
-          description: 'Total confianza y seguridad en nuestros servicios'
+          title: 'Confianza',
+          description: 'Seguridad y garantía en nuestros servicios'
         }
-      ]
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
+    },
+    position: 2
+  })
+  
+  // 4 - Bloque hero dividido (posición 3)
+  basicBlocks.push({
+    type: 'hero-split',
+    content: {
+      title: `Experiencia en ${businessInfo.industry}`,
+      subtitle: businessInfo.businessType,
+      description: `Descubre nuestra propuesta única de valor en ${businessInfo.industry.toLowerCase()}`,
+      leftImage: businessImages?.hero || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
+      leftImageAlt: `Imagen de ${businessInfo.businessType}`,
+      primaryButtonText: 'Conocer Más',
+      primaryButtonUrl: '#nosotros',
+      secondaryButtonText: 'Ver Servicios',
+      secondaryButtonUrl: '#servicios',
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-20',
+        paddingX: 'px-6'
+      }
     },
     position: 3
   })
   
-  // 4 - Bloque hero dividido
+  // 5 - Carac del producto (posición 4)
   basicBlocks.push({
-    type: 'hero-split',
+    type: 'product-features',
     content: {
-      title: `Experiencia en ${adjustedBusinessInfo.industry}`,
-      subtitle: adjustedBusinessInfo.businessType,
-      description: `Descubre nuestra propuesta única de valor en ${adjustedBusinessInfo.industry.toLowerCase()}`,
-      leftContent: {
-        title: 'Nuestra Misión',
-        description: `Brindar ${adjustedBusinessInfo.industry.toLowerCase()} de excelencia que transformen tu experiencia.`,
-        buttonText: 'Conocer Más',
-        buttonLink: '#'
-      },
-      rightContent: {
-        title: 'Nuestra Visión',
-        description: `Ser líderes en ${adjustedBusinessInfo.industry.toLowerCase()} con innovación constante.`,
-        buttonText: 'Ver Proyectos',
-        buttonLink: '#'
-      },
-      backgroundImage: businessImages?.hero || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop'
+      title: 'Nuestros Productos y Servicios',
+      subtitle: `Todo lo que ofrecemos en ${businessInfo.industry}`,
+      features: [
+        {
+          id: 'feature-1',
+          title: 'Calidad Superior',
+          description: `Productos de ${businessInfo.industry.toLowerCase()} con los más altos estándares`
+        },
+        {
+          id: 'feature-2',
+          title: 'Variedad',
+          description: 'Amplia selección para diferentes necesidades y preferencias'
+        },
+        {
+          id: 'feature-3',
+          title: 'Innovación',
+          description: 'Últimas tendencias y tecnología en nuestros productos'
+        },
+        {
+          id: 'feature-4',
+          title: 'Servicio Personalizado',
+          description: 'Atención dedicada y asesoramiento experto'
+        },
+        {
+          id: 'feature-5',
+          title: 'Garantía',
+          description: 'Confianza y seguridad en cada producto'
+        },
+        {
+          id: 'feature-6',
+          title: 'Soporte',
+          description: 'Acompañamiento continuo post-venta'
+        }
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
     position: 4
   })
   
-  // 5 - Carac del producto
+  // 6 - Bloque promocional (posición 5)
   basicBlocks.push({
-    type: 'product-features',
+    type: 'countdown',
     content: {
-      title: 'Nuestros Productos',
-      subtitle: 'Conoce nuestra selección exclusiva',
-      leftItems: [
-        {
-          id: '1',
-          icon: '🏷️',
-          title: 'Variedad',
-          description: 'Amplia selección de productos para elegir'
-        },
-        {
-          id: '2',
-          icon: '✨',
-          title: 'Calidad',
-          description: 'Productos seleccionados con estándares altos'
-        }
-      ],
-      centerImage: businessImages?.product || businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=600&h=400&fit=crop',
-      centerImageAlt: 'Productos destacados',
-      rightItems: [
-        {
-          id: '3',
-          icon: '🚚',
-          title: 'Entrega',
-          description: 'Envíos rápidos y seguros'
-        },
-        {
-          id: '4',
-          icon: '💳',
-          title: 'Pagos',
-          description: 'Métodos de pago seguros y flexibles'
-        }
-      ],
-      buttonText: 'Ver Catálogo',
-      buttonLink: '#'
+      title: 'Promo Lanzamiento Temporada 2025',
+      subtitle: '15% OFF + Beneficios Exclusivos',
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 días
+      backgroundImage: businessImages?.background || 'https://images.unsplash.com/photo-1564013799219-ab600027ffc6?w=1200&h=600&fit=crop',
+      button: {
+        text: 'Aprovechar Oferta',
+        link: '#contacto',
+        linkType: 'external' as const,
+        color: 'bg-primary',
+        hoverColor: 'bg-primary/90'
+      },
+      alignment: 'center' as const,
+      timerStyle: 'digital' as const,
+      timerColors: {
+        numbers: '#ffffff',
+        labels: '#ffffff',
+        background: '#000000'
+      },
+      expiredAction: 'show-message' as const,
+      expiredMessage: 'La oferta ha finalizado',
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
     position: 5
   })
   
-  // 6 - Bloque promocional
+  // 7 - Redes Sociales (posición 6)
   basicBlocks.push({
-    type: 'countdown',
+    type: 'social-media',
     content: {
-      title: '¡Oferta Exclusiva por Tiempo Limitado!',
-      subtitle: 'No te pierdas esta oportunidad única',
-      description: `Aprovecha nuestros ${adjustedBusinessInfo.industry.toLowerCase()} con descuentos especiales.`,
-      targetDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      backgroundColor: '#FF6B6B',
-      textColor: '#FFFFFF',
-      buttonText: 'Aprovechar Oferta',
-      buttonLink: '#'
+      buttonPosition: 'right' as const,
+      buttonMargin: 20,
+      buttonColor: '#25D366',
+      socialLinks: [
+        {
+          id: 'instagram',
+          name: 'Instagram',
+          icon: '📸',
+          url: `https://instagram.com/${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          order: 1
+        },
+        {
+          id: 'facebook',
+          name: 'Facebook',
+          icon: '👍',
+          url: `https://facebook.com/${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          order: 2
+        },
+        {
+          id: 'tiktok',
+          name: 'TikTok',
+          icon: '🎥',
+          url: `https://tiktok.com/@${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          order: 3
+        }
+      ],
+      animationType: 'vertical' as const,
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
     position: 6
   })
   
-  // 7 - Redes Sociales
-  basicBlocks.push({
-    type: 'social-media',
-    content: {
-      title: 'Síguenos en Redes Sociales',
-      subtitle: 'Mantente conectado con nuestras novedades',
-      description: `Síguenos en nuestras redes para conocer las últimas novedades sobre ${adjustedBusinessInfo.industry.toLowerCase()}.`,
-      socialLinks: [
-        {
-          id: '1',
-          name: 'Instagram',
-          icon: '📷',
-          url: 'https://instagram.com/tu-perfil',
-          order: 1
-        },
-        {
-          id: '2',
-          name: 'Facebook',
-          icon: '📘',
-          url: 'https://facebook.com/tu-pagina',
-          order: 2
-        },
-        {
-          id: '3',
-          name: 'Twitter',
-          icon: '🐦',
-          url: 'https://twitter.com/tu-perfil',
-          order: 3
-        },
-        {
-          id: '4',
-          name: 'LinkedIn',
-          icon: '💼',
-          url: 'https://linkedin.com/tu-perfil',
-          order: 4
-        },
-        {
-          id: '5',
-          name: 'YouTube',
-          icon: '📺',
-          url: 'https://youtube.com/tu-canal',
-          order: 5
-        },
-        {
-          id: '6',
-          name: 'TikTok',
-          icon: '🎵',
-          url: 'https://tiktok.com/@tu-perfil',
-          order: 6
-        }
-      ]
-    },
-    position: 7
-  })
-  
-  // 8 - Bloque youtube (siempre usaremos demo https://www.youtube.com/watch?v=S9w88y5Od9w)
+  // 8 - Bloque youtube (siempre usaremos demo https://www.youtube.com/watch?v=S9w88y5Od9w) (posición 7)
   basicBlocks.push({
     type: 'youtube',
     content: {
-      title: 'Presentamos ORUS v2.0',
-      description: 'Descubre la nueva versión de nuestra plataforma con características innovadoras y mejor rendimiento.',
+      title: `Conocé ${businessInfo.businessType}`,
+      description: 'Video institucional que muestra nuestra experiencia, instalaciones y el valor que agregamos a cada cliente.',
       videoUrl: 'https://www.youtube.com/watch?v=S9w88y5Od9w',
       videoId: 'S9w88y5Od9w',
-      visualMode: 'light',
+      visualMode: 'light' as const,
       controls: {
         hideControls: false,
         hideTitle: false,
         autoPlay: false,
-        muteOnStart: true,
+        muteOnStart: false,
         loop: false,
         showRelatedVideos: false,
         modestBranding: true
       },
       size: {
-        preset: 'medium',
+        preset: 'large' as const,
         height: '400',
-        heightUnit: 'px',
+        heightUnit: 'px' as const,
         marginTop: 0,
         marginBottom: 0
+      },
+      alignment: 'center' as const,
+      advanced: {
+        startTime: 0,
+        language: 'es'
+      },
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
+    },
+    position: 7
+  })
+  
+  // 9 - Bloque de carrito de productos (posición 8)
+  basicBlocks.push({
+    type: 'product-cart',
+    content: {
+      title: 'Nuestros Productos Destacados',
+      subtitle: `Selección exclusiva de ${businessInfo.industry}`,
+      whatsappNumber: '5491168765432',
+      products: [
+        {
+          id: 'producto-1',
+          name: `Producto Premium ${businessInfo.industry}`,
+          description: `El mejor producto de ${businessInfo.industry.toLowerCase()} para clientes exigentes`,
+          price: 299.99,
+          currency: 'ARS',
+          image: businessImages?.product || businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=400&h=300&fit=crop',
+          category: 'Premium',
+          inStock: true,
+          features: ['Alta calidad', 'Garantizado', 'Entrega rápida']
+        },
+        {
+          id: 'producto-2',
+          name: `Producto Estándar ${businessInfo.industry}`,
+          description: `Solución confiable de ${businessInfo.industry.toLowerCase()} para uso diario`,
+          price: 199.99,
+          currency: 'ARS',
+          image: businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop',
+          category: 'Estándar',
+          inStock: true,
+          features: ['Calidad confiable', 'Buen precio', 'Disponible']
+        }
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
       }
     },
     position: 8
   })
   
-  // 9 - Bloque de carrito de productos
-  basicBlocks.push({
-    type: 'product-cart',
-    content: {
-      title: 'Carrito de Compras',
-      subtitle: 'Tus productos seleccionados',
-      products: [
-        {
-          id: '1',
-          name: `Producto ${adjustedBusinessInfo.industry} 1`,
-          price: 29.99,
-          quantity: 1,
-          image: businessImages?.product || businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=200&h=200&fit=crop'
-        },
-        {
-          id: '2',
-          name: `Producto ${adjustedBusinessInfo.industry} 2`,
-          price: 49.99,
-          quantity: 2,
-          image: businessImages?.product || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&h=200&fit=crop'
-        }
-      ],
-      currency: '$',
-      showTax: true,
-      taxRate: 21,
-      buttonText: 'Proceder al Pago',
-      buttonLink: '#'
-    },
-    position: 9
-  })
-  
-  // 10 - Bloque de testimonios
+  // 10 - Bloque de testimonios (posición 9)
   basicBlocks.push({
     type: 'testimonials',
     content: {
       title: 'Lo que dicen nuestros clientes',
+      subtitle: `Experiencias reales con ${businessInfo.businessType}`,
       testimonials: [
         {
           name: 'María García',
-          role: 'Cliente',
-          company: adjustedBusinessInfo.businessType,
-          content: `Excelente servicio de ${adjustedBusinessInfo.industry.toLowerCase()}. Superó todas mis expectativas, totalmente recomendado.`,
+          role: 'Cliente Satisfecho',
+          company: businessInfo.location || 'Buenos Aires',
+          content: `Excelente atención y calidad en ${businessInfo.industry.toLowerCase()}. El lugar es increíble, ideal para recomendar.`,
           avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face'
         },
         {
           name: 'Juan Pérez',
-          role: 'Cliente',
-          company: adjustedBusinessInfo.businessType,
-          content: `Profesionalismo y calidad en ${adjustedBusinessInfo.industry.toLowerCase()}. El mejor equipo con el que he trabajado.`,
+          role: 'Cliente Frecuente',
+          company: businessInfo.location || 'Córdoba',
+          content: `Volvería sin dudar. Todo impecable, muy profesional y con resultados excelentes.`,
           avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
         },
         {
           name: 'Ana Martínez',
-          role: 'Cliente',
-          company: adjustedBusinessInfo.businessType,
-          content: `Increíble experiencia con ${adjustedBusinessInfo.businessType}. La atención y los resultados son excepcionales.`,
+          role: 'Cliente Nuevo',
+          company: businessInfo.location || 'Rosario',
+          content: `La atención es excelente y los productos son de primera. Muy recomendable.`,
           avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face'
         }
-      ]
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
+    },
+    position: 9
+  })
+  
+  // 11 - Bloque CTA (posición 10)
+  basicBlocks.push({
+    type: 'cta',
+    content: {
+      title: `¿Listo para experimentar ${businessInfo.businessType}?`,
+      description: `Contactanos directamente y descubrí por qué somos líderes en ${businessInfo.industry.toLowerCase()}.`,
+      buttonText: businessInfo.callToAction || 'Consultar Ahora',
+      buttonLink: '#contacto',
+      backgroundImage: businessImages?.cta || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop',
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-20',
+        paddingX: 'px-6'
+      }
     },
     position: 10
   })
   
-  // 11 - Bloque CTA
+  // 12 - Bloque de precios (posición 11)
   basicBlocks.push({
-    type: 'cta',
+    type: 'pricing',
     content: {
-      title: `¿Listo para empezar con ${adjustedBusinessInfo.businessType}?`,
-      description: `Únete a nuestros clientes satisfechos y descubre la diferencia en ${adjustedBusinessInfo.industry}.`,
-      buttonText: 'Comenzar Ahora',
-      buttonLink: '#',
-      backgroundImage: businessImages?.cta || businessImages?.background || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop'
+      title: 'Nuestros Precios',
+      subtitle: `Planes de ${businessInfo.industry} para todas las necesidades`,
+      plans: [
+        {
+          icon: '🌟',
+          name: 'Básico',
+          price: '$19.999',
+          period: 'por mes',
+          description: 'Perfecto para comenzar',
+          features: [
+            `${businessInfo.industry} básico`,
+            'Soporte por email',
+            '1 revisión mensual',
+            'Acceso a plataforma'
+          ],
+          buttonText: 'Empezar',
+          buttonLink: '#contacto',
+          featured: false
+        },
+        {
+          icon: '🚀',
+          name: 'Profesional',
+          price: '$39.999',
+          period: 'por mes',
+          description: 'Lo más popular',
+          features: [
+            'Todo lo del Básico',
+            `${businessInfo.industry} avanzado`,
+            'Soporte prioritario',
+            'Revisiones ilimitadas',
+            'Análisis detallado'
+          ],
+          buttonText: 'Elegir Plan',
+          buttonLink: '#contacto',
+          featured: true
+        },
+        {
+          icon: '💎',
+          name: 'Empresarial',
+          price: '$79.999',
+          period: 'por mes',
+          description: 'Para grandes proyectos',
+          features: [
+            'Todo lo del Profesional',
+            `${businessInfo.industry} empresarial`,
+            'Soporte 24/7',
+            'API completa',
+            'Personalización total'
+          ],
+          buttonText: 'Contactar',
+          buttonLink: '#contacto',
+          featured: false
+        }
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
     position: 11
   })
   
-  // 12 - Bloque de precios
+  // 13 - Contacto whatsapp (posición 12)
   basicBlocks.push({
-    type: 'pricing',
+    type: 'whatsapp-contact',
     content: {
-      title: 'Nuestros Planes',
-      subtitle: 'Elige el plan que mejor se adapte a tus necesidades',
-      plans: [
-        {
-          name: 'Básico',
-          price: 29,
-          frequency: '/mes',
-          features: [
-            'Característica básica 1',
-            'Característica básica 2',
-            'Soporte por email'
-          ],
-          highlighted: false,
-          buttonText: 'Empezar',
-          buttonLink: '#'
-        },
-        {
-          name: 'Pro',
-          price: 59,
-          frequency: '/mes',
-          features: [
-            'Todas las características básicas',
-            'Características avanzadas',
-            'Soporte prioritario',
-            'Análisis y reportes'
-          ],
-          highlighted: true,
-          buttonText: 'Empezar',
-          buttonLink: '#'
-        },
-        {
-          name: 'Empresarial',
-          price: 99,
-          frequency: '/mes',
-          features: [
-            'Todas las características Pro',
-            'API completa',
-            'Soporte 24/7',
-            'Personalización total'
-          ],
-          highlighted: false,
-          buttonText: 'Contactar',
-          buttonLink: '#'
-        }
-      ]
+      title: 'Consultanos ahora',
+      description: `Por disponibilidad o promociones en ${businessInfo.industry.toLowerCase()}`,
+      whatsappNumber: '5491168765432',
+      defaultMessage: `Hola, estoy interesado en ${businessInfo.businessType}. ¿Podrían darme más información sobre sus servicios de ${businessInfo.industry.toLowerCase()}?`,
+      buttonText: 'WhatsApp +54 9 11 6876-5432',
+      leftImage: businessImages?.contact || businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=600&h=400&fit=crop',
+      leftImageAlt: 'Contacto WhatsApp',
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-16',
+        paddingX: 'px-6'
+      }
     },
     position: 12
   })
   
-  // 13 - Contacto whatsapp
-  basicBlocks.push({
-    type: 'whatsapp-contact',
-    content: {
-      title: '¿Tenés Consultas?',
-      description: `Contactanos por WhatsApp para más información sobre ${adjustedBusinessInfo.industry.toLowerCase()}`,
-      whatsappNumber: '5491168765432',
-      defaultMessage: `Hola! Estoy interesado en ${adjustedBusinessInfo.industry.toLowerCase()} de ${adjustedBusinessInfo.businessType}. ¿Podrían darme más información?`,
-      buttonText: 'Escribir por WhatsApp',
-      leftImage: businessImages?.contact || businessImages?.background || 'https://images.unsplash.com/photo-1607082348824-0a96f2a2bdaa?w=600&h=400&fit=crop',
-      leftImageAlt: 'Contacto WhatsApp'
-    },
-    position: 13
-  })
-  
-  // 14 - Bloque de pie de pagina
+  // 14 - Bloque de pie de pagina (posición 13)
   basicBlocks.push({
     type: 'footer',
     content: {
-      logo: '/logo.svg',
-      company: adjustedBusinessInfo.businessType,
-      description: `Líderes en ${adjustedBusinessInfo.industry} con compromiso de calidad y servicio.`,
+      logo: '',
+      company: businessInfo.businessType,
+      description: `Líderes en ${businessInfo.industry} con compromiso de calidad y servicio profesional.`,
       links: [
         {
-          title: 'Servicios',
+          title: 'Enlaces Rápidos',
           items: [
-            { text: adjustedBusinessInfo.industry, url: '#' },
-            { text: 'Catálogo', url: '#' },
-            { text: 'Contacto', url: '#' }
+            { text: 'Inicio', url: '#' },
+            { text: 'Servicios', url: '#servicios' },
+            { text: 'Productos', url: '#productos' },
+            { text: 'Contacto', url: '#contacto' }
           ]
         },
         {
-          title: 'Empresa',
+          title: 'Nuestros Servicios',
           items: [
-            { text: 'Sobre Nosotros', url: '#' },
-            { text: 'Blog', url: '#' },
+            { text: businessInfo.industry, url: '#' },
+            { text: 'Asesoramiento', url: '#' },
+            { text: 'Soporte', url: '#' },
             { text: 'Ubicación', url: '#' }
           ]
         }
       ],
       socialLinks: [
-        { platform: 'whatsapp', url: '#', icon: '📱' },
-        { platform: 'instagram', url: '#', icon: '📷' },
-        { platform: 'facebook', url: '#', icon: '📘' }
-      ]
+        {
+          platform: 'Instagram',
+          url: `https://instagram.com/${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          icon: '📷'
+        },
+        {
+          platform: 'Facebook',
+          url: `https://facebook.com/${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          icon: '👍'
+        },
+        {
+          platform: 'TikTok',
+          url: `https://tiktok.com/@${businessInfo.businessType.toLowerCase().replace(/\s+/g, '')}`,
+          icon: '🎥'
+        }
+      ],
+      styles: {
+        backgroundColor: 'bg-background',
+        paddingY: 'py-8',
+        paddingX: 'px-6'
+      }
     },
-    position: 14
+    position: 13
   })
   
-  console.log(`Generated ${basicBlocks.length} basic blocks for fallback`)
+  console.log(`Generated ${basicBlocks.length} detailed blocks for ${businessInfo.businessType}`)
   return basicBlocks
 }
 
@@ -2097,7 +2148,7 @@ export async function POST(request: NextRequest) {
       const blockGenerationErrorTime = Date.now() - blockGenerationStartTime
       console.log(`[AUDIT] AI block generation failed after ${blockGenerationErrorTime}ms, using basic fallback blocks`)
       console.log('[AUDIT] Block generation error:', blockError)
-      blocks = generateBasicBlocks(prompt, businessInfo, businessImages)
+      blocks = generateDetailedBlocks(prompt, businessInfo, businessImages)
     }
     
     console.log('[AUDIT] Total blocks generated:', blocks.length)

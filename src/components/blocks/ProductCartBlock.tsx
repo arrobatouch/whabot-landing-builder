@@ -23,6 +23,23 @@ export function ProductCartBlock({ content, onContentChange }: ProductCartBlockP
     }
   }
 
+  // Función segura para obtener el precio como número
+  const safePrice = (price: any): number => {
+    if (typeof price === 'number') return price
+    if (typeof price === 'string') {
+      // Remover símbolos de moneda y convertir a número
+      const num = parseFloat(price.replace(/[^\d.-]/g, ''))
+      return isNaN(num) ? 0 : num
+    }
+    return 0
+  }
+
+  // Función segura para formatear precio
+  const formatPrice = (price: any, currency?: string): string => {
+    const numPrice = safePrice(price)
+    return `${numPrice.toFixed(2)} ${currency || 'USD'}`
+  }
+
   const [cartItems, setCartItems] = useState<{[key: string]: number}>({})
   
   const addToCart = (productId: string) => {
@@ -51,7 +68,7 @@ export function ProductCartBlock({ content, onContentChange }: ProductCartBlockP
   const getCartTotal = () => {
     return Object.entries(cartItems).reduce((total, [productId, quantity]) => {
       const product = content.products.find(p => p.id === productId)
-      return total + (product ? product.price * quantity : 0)
+      return total + (product ? safePrice(product.price) * quantity : 0)
     }, 0)
   }
 
@@ -59,10 +76,10 @@ export function ProductCartBlock({ content, onContentChange }: ProductCartBlockP
     const whatsappNumber = content.whatsappNumber || '+5491130190242'
     const cartItemsList = Object.entries(cartItems).map(([productId, quantity]) => {
       const product = content.products.find(p => p.id === productId)
-      return product ? `${quantity}x ${product.name} - ${product.price.toFixed(2)} ${product.currency}` : ''
+      return product ? `${quantity}x ${product.name} - ${formatPrice(product.price, product.currency)}` : ''
     }).filter(item => item).join('\n')
     
-    const message = `¡Hola! Quiero comprar este producto:\n\n${cartItemsList}\n\nTotal: ${getCartTotal().toFixed(2)} ${content.products[0]?.currency || 'USD'}`
+    const message = `¡Hola! Quiero comprar este producto:\n\n${cartItemsList}\n\nTotal: ${formatPrice(getCartTotal(), content.products[0]?.currency)}`
     
     const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -120,7 +137,7 @@ export function ProductCartBlock({ content, onContentChange }: ProductCartBlockP
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-primary">
-                    {getCartTotal().toFixed(2)} {content.products[0]?.currency || 'USD'}
+                    {formatPrice(getCartTotal(), content.products[0]?.currency)}
                   </div>
                   <Button size="sm" className="mt-1" onClick={sendWhatsAppMessage}>
                     Proceder al pago
@@ -206,7 +223,7 @@ export function ProductCartBlock({ content, onContentChange }: ProductCartBlockP
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-2xl font-bold text-primary">
-                          {product.price.toFixed(2)} {product.currency}
+                          {formatPrice(product.price, product.currency)}
                         </div>
                         <div className="flex items-center space-x-1 mt-1">
                           {[1, 2, 3, 4, 5].map((star) => (
