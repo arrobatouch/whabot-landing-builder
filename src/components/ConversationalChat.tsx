@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader2, Send, MessageSquare, Building2, Phone, Mail, MapPin, Star, Check, CheckCheck, BarChart3, Activity } from 'lucide-react'
+import { Loader2, Send, MessageSquare, Building2, Phone, Mail, MapPin, Star, Check, CheckCheck, BarChart3, Activity, ThumbsUp, Edit } from 'lucide-react'
 
 interface ConversationalChatProps {
   onBusinessInfoComplete: (businessInfo: any) => void
@@ -24,18 +24,17 @@ interface Message {
 
 interface BusinessData {
   nombre_usuario?: string
-  nombre_negocio?: string
+  nombre_emprendimiento?: string
   rubro?: string
-  publico_objetivo?: string
-  diferencial?: string
   ubicacion?: string
-  objetivo_web?: string
-  estilo_marca?: string
-  redes?: string
-  cta_principal?: string
+  publico_objetivo?: string
+  productos_servicios?: string
+  diferenciales?: string
+  promociones?: string
+  contacto?: string
+  redes_sociales?: string
+  estado_chat?: string
 }
-
-const SYSTEM_PROMPT = ""
 
 export function ConversationalChat({ onBusinessInfoComplete, onManualMode, isGenerating = false }: ConversationalChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
@@ -44,6 +43,8 @@ export function ConversationalChat({ onBusinessInfoComplete, onManualMode, isGen
   const [businessData, setBusinessData] = useState<BusinessData>({})
   const [isTyping, setIsTyping] = useState(false)
   const [showMonitoring, setShowMonitoring] = useState(false)
+  const [landingResult, setLandingResult] = useState<string | null>(null)
+  const [showApproval, setShowApproval] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -64,98 +65,6 @@ export function ConversationalChat({ onBusinessInfoComplete, onManualMode, isGen
     }
     setMessages([welcomeMessage])
   }, [])
-
-  // Función para extraer entidades del texto del usuario
-  const extractEntities = (text: string): Partial<BusinessData> => {
-    const extracted: Partial<BusinessData> = {}
-    
-    // Patrones para extracción de entidades
-    const patterns = {
-      nombre_usuario: [
-        /(me llamo|soy|mi nombre es)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)/i,
-        /([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)(?:\s+dice|habl[ao]|te saluda)/i
-      ],
-      nombre_negocio: [
-        /mi\s+(negocio|empresa|proyecto)\s+(?:se llama|es)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s&]+)/i,
-        /(?:se llama|es)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ0-9\s]+)/i,
-        /([A-ZÁÉÍÓÚÑ]{3,})(?:\s+(?:S\.A\.|SRL|Ltda\.|Inc\.))?/i
-      ],
-      rubro: [
-        /alquiler\s+(?:de\s+)?departamentos?/i,
-        /alquiler\s+temporario/i,
-        /restaurante|gastronomía|comida/i,
-        /consultoría|asesoramiento/i,
-        /diseño|diseñador|diseñadora/i,
-        /tienda|venta|ecommerce/i,
-        /servicios?\s+de\s+([a-záéíóúñ]+)/i,
-        /marketing|publicidad/i,
-        /turismo|hostelería/i,
-        /educación|capacitación/i,
-        /construcción|obras/i,
-        /tecnología|software/i,
-        /salud|medicina/i,
-        /belleza|estética/i
-      ],
-      ubicacion: [
-        /(?:ubicado?|en|desde)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ\s]+),?\s*([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*)/i,
-        /([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)(?:,\s*([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+))?/i,
-        /en\s+([a-záéíóúñ\s]+)(?=\.|$)/i
-      ],
-      objetivo_web: [
-        /(?:quiero|busco|necesito)\s+(?:que\s+)?(?:mi\s+web|sitio|página)\s+(?:genere|tenga|logre)\s+([a-záéíóúñ\s]+)/i,
-        /(?:para\s+)?(?:generar|conseguir|lograr|tener)\s+(más\s+)?([a-záéíóúñ\s]+)/i,
-        /reservar|vender|mostrar|contactar|informar|comprar|promocionar/i
-      ],
-      publico_objetivo: [
-        /(?:público|clientes|mercado|target)\s+(?:es|son|dirigido?\s+a)\s+([a-záéíóúñ\s]+)/i,
-        /(?:para|a)\s+([a-záéíóúñ\s]+)(?:como\s+público)?/i,
-        /jóvenes|adultos|familias|empresas|niños|mujeres|hombres|turistas|clientes/i
-      ],
-      diferencial: [
-        /(?:diferencial|ventaja|lo que\s+)?(?:nos hace|hace)\s+(?:únicos|especiales|diferentes)\s+([a-záéíóúñ\s]+)/i,
-        /(?:somos|ofrecemos|tenemos)\s+([a-záéíóúñ\s]+)(?:que\s+nos\s+diferencia)?/i,
-        /único|especial|diferente|mejor|calidad|profesional|exclusivo/i
-      ]
-    }
-
-    // Procesar cada patrón
-    Object.entries(patterns).forEach(([field, fieldPatterns]) => {
-      for (const pattern of fieldPatterns) {
-        const match = text.match(pattern)
-        if (match) {
-          // Para ubicación, capturar ciudad y país si están disponibles
-          if (field === 'ubicacion' && match[2]) {
-            extracted[field as keyof BusinessData] = `${match[1]}, ${match[2]}`
-          } else {
-            extracted[field as keyof BusinessData] = match[match.length > 1 ? 1 : 0].trim()
-          }
-          break
-        }
-      }
-    })
-
-    return extracted
-  }
-
-  // Función para generar el contexto para DeepSeek
-  const generateContext = () => {
-    const knownData = Object.entries(businessData)
-      .filter(([_, value]) => value && value.trim() !== '')
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n')
-
-    const recentMessages = messages.slice(-4).map(msg => 
-      `${msg.sender}: ${msg.text}`
-    ).join('\n')
-
-    return `
-Datos conocidos:
-${knownData}
-
-Conversación reciente:
-${recentMessages}
-    `.trim()
-  }
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isProcessing) return
@@ -209,6 +118,23 @@ ${recentMessages}
         }
 
         setMessages(prev => [...prev, assistantMessage])
+
+        // Verificar si la respuesta contiene un landing completo (palabras clave)
+        const landingKeywords = [
+          'landing generada', 'contenido completo', 'bloques', 'módulos',
+          'hero slide', 'bloque de refuerzo', 'características principales',
+          'testimonios', 'cta', 'precios', 'contacto whatsapp', 'pie de página'
+        ]
+        
+        const isLandingComplete = landingKeywords.some(keyword => 
+          aiReply.toLowerCase().includes(keyword.toLowerCase())
+        )
+
+        if (isLandingComplete) {
+          // Mostrar el resultado en la columna derecha para aprobación
+          setLandingResult(aiReply)
+          setShowApproval(true)
+        }
       } else {
         console.error('No AI reply found in response:', data)
         // Use fallback response
@@ -219,32 +145,6 @@ ${recentMessages}
           timestamp: new Date()
         }
         setMessages(prev => [...prev, fallbackMessage])
-      }
-
-      // Extract entities from user message for business data
-      const extractedEntities = extractEntities(inputValue)
-      
-      // Update business data
-      const updatedBusinessData = { ...businessData, ...extractedEntities }
-      setBusinessData(updatedBusinessData)
-
-      // Check if we have enough data to generate the landing
-      const hasEnoughData = checkIfEnoughData(updatedBusinessData)
-      if (hasEnoughData) {
-        // Add final message indicating analysis is in progress
-        const finalMessage: Message = {
-          id: 'final-' + Date.now(),
-          text: '¡Gracias! Ya tengo toda tu información. Ahora estoy analizando y preparando el contenido para tu landing page...',
-          sender: 'assistant',
-          timestamp: new Date()
-        }
-        
-        setMessages(prev => [...prev, finalMessage])
-        
-        // Wait a moment for user to see the message
-        setTimeout(() => {
-          onBusinessInfoComplete(updatedBusinessData)
-        }, 2000)
       }
 
     } catch (error) {
@@ -272,42 +172,45 @@ ${recentMessages}
     setIsProcessing(false)
   }
 
-  // Función para verificar si tenemos suficientes datos
-  const checkIfEnoughData = (data: BusinessData): boolean => {
-    const requiredFields = ['nombre_negocio', 'rubro']
-    const optionalFields = ['ubicacion', 'objetivo_web', 'publico_objetivo']
-    
-    const hasRequired = requiredFields.every(field => data[field as keyof BusinessData])
-    const hasSomeOptional = optionalFields.some(field => data[field as keyof BusinessData])
-    
-    console.log('Checking data:', { data, hasRequired, hasSomeOptional })
-    
-    return hasRequired && hasSomeOptional
-  }
-
-  // Función para obtener mensaje pidiendo información faltante
-  const getMissingInfo = (data: BusinessData): string | null => {
-    const requiredFields = ['nombre_negocio', 'rubro']
-    const optionalFields = ['ubicacion', 'objetivo_web', 'publico_objetivo']
-    
-    const missingRequired = requiredFields.filter(field => !data[field as keyof BusinessData])
-    const hasAnyOptional = optionalFields.some(field => data[field as keyof BusinessData])
-    
-    if (missingRequired.length > 0) {
-      const fieldNames = {
-        'nombre_negocio': 'el nombre de tu negocio',
-        'rubro': 'el rubro o tipo de negocio'
+  // Función para aprobar el landing generado
+  const handleApproveLanding = () => {
+    if (landingResult) {
+      setShowApproval(false)
+      
+      // Add confirmation message
+      const confirmationMessage: Message = {
+        id: 'confirmation-' + Date.now(),
+        text: '¡Excelente! He aprobado el contenido de tu landing. Ahora voy a crear la página con todos los bloques correspondientes.',
+        sender: 'assistant',
+        timestamp: new Date()
       }
       
-      const missingNames = missingRequired.map(field => fieldNames[field as keyof typeof fieldNames]).join(' y ')
-      return `Para continuar, necesito que me digas ${missingNames}. ¿Podrías proporcionarme esa información?`
+      setMessages(prev => [...prev, confirmationMessage])
+      
+      // Parse the landing result and pass to parent
+      setTimeout(() => {
+        onBusinessInfoComplete({
+          landingContent: landingResult,
+          rawContent: landingResult
+        })
+      }, 1500)
+    }
+  }
+
+  // Función para rechazar y seguir editando
+  const handleRejectLanding = () => {
+    setShowApproval(false)
+    setLandingResult(null)
+    
+    // Add message asking for more information
+    const correctionMessage: Message = {
+      id: 'correction-' + Date.now(),
+      text: 'Entendido. Por favor, dime qué cambios o información adicional te gustaría agregar o modificar en la landing.',
+      sender: 'assistant',
+      timestamp: new Date()
     }
     
-    if (!hasAnyOptional) {
-      return `¡Ya tengo el nombre y rubro de tu negocio! Ahora necesito un poco más de información. Podrías decirme:\n\n• ¿Dónde está ubicado tu negocio?\n• ¿Qué objetivo tiene tu página web?\n• ¿Quién es tu público objetivo?\n\nCon solo uno de estos datos podré comenzar a crear tu landing.`
-    }
-    
-    return null
+    setMessages(prev => [...prev, correctionMessage])
   }
 
   const formatTime = (date: Date) => {
@@ -360,11 +263,6 @@ ${recentMessages}
         </div>
       </div>
     )
-  }
-
-  const getProgressPercentage = () => {
-    const fields = Object.keys(businessData).filter(key => businessData[key as keyof BusinessData])
-    return (fields.length / 10) * 100 // 10 campos totales
   }
 
   // Componente de mini-dashboard de monitoreo
@@ -509,7 +407,7 @@ ${recentMessages}
               </div>
               <div>
                 <h2 className="font-semibold">Asistente Conversacional</h2>
-                <p className="text-xs opacity-90">Conectado y listo para ayudarte</p>
+                <p className="text-xs opacity-90">Conectado a AnythingLLM</p>
               </div>
             </div>
 
@@ -539,9 +437,9 @@ ${recentMessages}
             </div>
 
             {/* Input Area */}
-            <div className="p-4 border-t border-gray-200 dark:border-slate-700">
-              <div className="flex items-center space-x-2">
-                <Input
+            <div className="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
+              <div className="flex flex-col space-y-3">
+                <Textarea
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Escribi tu respuesta..."
@@ -552,86 +450,114 @@ ${recentMessages}
                     }
                   }}
                   disabled={isProcessing || isGenerating}
-                  className="flex-1"
-                  ref={(input) => {
-                    if (input && !isProcessing && !isGenerating) {
+                  className="flex-1 min-h-[80px] max-h-32 resize-none text-base"
+                  ref={(textarea) => {
+                    if (textarea && !isProcessing && !isGenerating) {
                       try {
-                        input.focus()
+                        textarea.focus()
                       } catch (error) {
-                        console.warn('Could not focus input:', error)
+                        console.warn('Could not focus textarea:', error)
                       }
                     }
                   }}
                 />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isProcessing || isGenerating}
-                  size="icon"
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                </Button>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    Presiona Enter para enviar, Shift+Enter para nueva línea
+                  </span>
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputValue.trim() || isProcessing || isGenerating}
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    {isProcessing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Send className="h-4 w-4 mr-2" />}
+                    Enviar
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Section - Progress and Info */}
+          {/* Right Section - Landing Result and Approval */}
           <div className="space-y-6">
-            {/* Progress Card */}
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 rounded-2xl p-6 shadow-lg">
+            {/* Landing Result Approval Card - Takes more space */}
+            {showApproval && landingResult && (
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-6 shadow-lg flex-1">
+                <h3 className="text-lg font-semibold mb-4 flex items-center text-blue-800 dark:text-blue-200">
+                  <Edit className="h-5 w-5 mr-2" />
+                  ¿Aprobas este contenido para tu landing?
+                </h3>
+                
+                <div className="bg-white dark:bg-slate-800 rounded-lg p-4 mb-6 max-h-[500px] overflow-y-auto border border-blue-100 dark:border-blue-900">
+                  <div className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
+                    <ReactMarkdown 
+                      components={{
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+                        h1: ({ children }) => <h1 className="text-lg font-bold mb-3">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-md font-semibold mb-2">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-sm font-medium mb-1">{children}</h3>,
+                        ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
+                        li: ({ children }) => <li className="mb-1">{children}</li>
+                      }}
+                    >
+                      {landingResult}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+                
+                <div className="flex space-x-3">
+                  <Button
+                    onClick={handleApproveLanding}
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <ThumbsUp className="h-4 w-4 mr-2" />
+                    Aprobar y Crear
+                  </Button>
+                  <Button
+                    onClick={handleRejectLanding}
+                    variant="outline"
+                    className="flex-1 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300"
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    Seguir Editando
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Status Card - Smaller when no approval */}
+            <div className={`bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 rounded-2xl p-6 shadow-lg ${showApproval ? 'hidden' : ''}`}>
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <Building2 className="h-5 w-5 mr-2 text-blue-600" />
-                Progreso de nuestra conversación
+                Estado del Proceso
               </h3>
               
               <div className="space-y-4">
-                <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
-                  <div 
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${getProgressPercentage()}%` }}
-                  ></div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">Conexión:</span>
+                  <Badge variant="outline" className="text-green-600 dark:text-green-400">
+                    AnythingLLM Activo
+                  </Badge>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
-                  {Object.entries(businessData).map(([key, value]) => (
-                    value && (
-                      <div key={key} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </span>
-                      </div>
-                    )
-                  ))}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">Estado:</span>
+                  <Badge variant={showApproval ? "default" : "secondary"}>
+                    {showApproval ? "Esperando Aprobación" : "En Conversación"}
+                  </Badge>
+                </div>
+                
+                <div className="text-sm text-gray-600 dark:text-gray-300">
+                  {showApproval ? (
+                    <span>📋 Revisa el contenido generado y apruébalo para crear tu landing.</span>
+                  ) : (
+                    <span>💬 Conversa con el asistente para generar el contenido de tu landing.</span>
+                  )}
                 </div>
               </div>
-            </div>
-
-            {/* Tips Card */}
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 rounded-2xl p-6 shadow-lg">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <Star className="h-5 w-5 mr-2 text-yellow-500" />
-                Consejos para una buena conversación
-              </h3>
-              
-              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
-                  <span>Expresate con libertad, como si estuvieras hablando con un amigo</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
-                  <span>Podés mencionar varios datos en un solo mensaje</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
-                  <span>Sé específico sobre lo que hace único a tu negocio</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
-                  <span>Contá qué querés que logre tu página web</span>
-                </li>
-              </ul>
             </div>
 
             {/* Manual Mode Button */}
