@@ -1,2 +1,21 @@
-> Ready on http://127.0.0.1:3000
-> Socket.IO server running at ws://127.0.0.1:3000/api/socketio
+ ⨯ uncaughtException:  Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+    aSending request to AnythingLLM... {
+  baseUrl: 'https://orus.teccia.com.ar',
+  workspace: 'chat-landing',
+  hasApiKey: true,
+  prompt: 'Hola...'
+}
+Trying endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+Success with endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+AnythingLLM response text: {"id":"c2414efd-8119-4fc7-b2d6-88e4bddcd12d","type":"textResponse","close":true,"error":null,"chatId":1030,"textResponse":"¡Hola! 👋 Soy tu asistente y voy a ayudarte a crear todo el contenido de tu l
+AnythingLLM response: { success: true, hasContent: true }
+Sending request to AnythingLLM... {
+  baseUrl: 'https://orus.teccia.com.ar',
+  workspace: 'chat-landing',
+  hasApiKey: true,
+  prompt: 'trae la info ultima...'
+}
+Trying endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+Success with endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+AnythingLLM response text: {"id":"3c09a709-4bd9-42a1-adf5-566aa79bb50a","type":"textResponse","close":true,"error":null,"chatId":1031,"textResponse":"¡Claro! Aquí te traigo nuevamente toda la información y el contenido que arma
+AnythingLLM response: { success: true, hasContent: true }

@@ -3,7 +3,7 @@
 import { TemplateType, BlockType } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Palette, Sparkles, ArrowLeft, Wand2, Plus, X, Eye } from 'lucide-react'
+import { Palette, Sparkles, ArrowLeft, Wand2, Plus, X, Eye, Shield } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Tabs, TabContent } from '@/components/ui/tabs'
 import { useState } from 'react'
@@ -14,6 +14,7 @@ interface HeaderProps {
   onBackToAssistant?: () => void
   onPreview?: () => void
   showBackButton?: boolean
+  showAssistant?: boolean
   blocks?: BlockType[]
   setBlocks?: (blocks: BlockType[]) => void
 }
@@ -31,6 +32,7 @@ export function Header({
   onBackToAssistant, 
   onPreview,
   showBackButton = false,
+  showAssistant = false,
   blocks = [],
   setBlocks = () => {}
 }: HeaderProps) {
@@ -202,6 +204,17 @@ export function Header({
           </div>
           
           <ThemeToggle />
+          
+          {/* Admin Panel - Hidden in plain sight */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => window.open('/admin', '_blank')}
+            className="text-muted-foreground hover:text-foreground"
+            title="Panel de Administración"
+          >
+            <Shield className="h-4 w-4" />
+          </Button>
           
           <Button 
             variant="outline" 

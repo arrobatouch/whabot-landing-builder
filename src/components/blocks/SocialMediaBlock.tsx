@@ -49,7 +49,7 @@ export function SocialMediaBlock({ content, onContentChange }: SocialMediaBlockP
   ].join(' ')
 
   const buttonStyle = {
-    marginBottom: `${content.buttonMargin}px`,
+    marginBottom: `${content.buttonMargin || 20}px`,
     backgroundColor: content.buttonColor || '#3b82f6'
   }
 

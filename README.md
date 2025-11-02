@@ -1,242 +1,141 @@
-# 🚀 Whabot Landing Builder v2.4.0
+# 🚀 Welcome to Z.ai Code Scaffold
 
-Generador visual de landings basado en React + Next.js con integración de IA y bloques reutilizables.
+A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
 
-## ✨ Características Principales
+## ✨ Technology Stack
 
-### 🎯 Generador Visual
-- **🎨 Drag & Drop**: Interfaz intuitiva para construir landings visualmente
-- **📱 Vista Previa en Tiempo Real**: Visualiza los cambios instantáneamente
-- **🧩 Bloques Reutilizables**: 20+ tipos de bloques predefinidos
-- **🎯 Editor Visual**: Modifica contenido, estilos y propiedades fácilmente
-
-### 🤖 Integración con IA
-- **📝 Generación Automática**: Crea landings completas con descripciones simples
-- **🎨 Diseño Inteligente**: La IA selecciona imágenes y crea contenido persuasivo
-- **🔍 Búsqueda de Imágenes**: Integración con Unsplash para imágenes profesionales
-- **💬 Asistente Virtual**: Ayuda guiada para crear landings efectivas
-
-### 🏗️ Bloques Disponibles
-- **🎭 Hero Slide**: Hero interactivo con imágenes de fondo
-- **📱 Navegación**: Menús de navegación personalizables
-- **⭐ Características**: Muestra las características de tu producto
-- **💰 Precios**: Tablas de precios y planes
-- **🗣️ Testimonios**: Muestra opiniones de clientes
-- **📞 Contacto WhatsApp**: Integración directa con WhatsApp
-- **📊 Estadísticas**: Muestra métricas y números importantes
-- **⏰ Countdown**: Bloques promocionales con cuenta regresiva
-- **🎥 YouTube**: Integración con videos de YouTube
-- **🛒 Carrito**: Bloques de productos y compras
-- **📅 Proceso**: Muestra procesos paso a paso
-- **❓ FAQ**: Preguntas frecuentes
-- **👥 Footer**: Pies de página personalizables
-- **🖼️ Imágenes**: Galerías y bloques de imágenes
-- **📈 Línea de Tiempo**: Muestra evolución o historia
-- **🔄 Refuerzo**: Bloques de llamada a la acción
-
-## 🚀 Tecnología
+This scaffold provides a robust foundation built with:
 
 ### 🎯 Core Framework
-- **⚡ Next.js 15**: Framework React para producción con App Router
-- **📘 TypeScript 5**: JavaScript tipado para mejor experiencia de desarrollo
-- **🎨 Tailwind CSS 4**: Framework CSS utility-first para desarrollo rápido de UI
+- **⚡ Next.js 15** - The React framework for production with App Router
+- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
+- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
 
 ### 🧩 UI Components & Styling
-- **🧩 shadcn/ui**: Componentes accesibles de alta calidad
-- **🎯 Lucide React**: Biblioteca de iconos consistente
-- **🌈 Framer Motion**: Biblioteca de motion para React
-- **🎨 Next Themes**: Soporte para modo oscuro/claro
+- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
+- **🎯 Lucide React** - Beautiful & consistent icon library
+- **🌈 Framer Motion** - Production-ready motion library for React
+- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
 
-### 🤖 AI Integration
-- **🤖 z-ai-web-dev-sdk**: SDK para integración con modelos de lenguaje
-- **🖼️ Unsplash API**: Búsqueda de imágenes profesionales
-- **💬 WhatsApp API**: Integración con mensajería
-- **📊 Análisis Inteligente**: Procesamiento de contenido con IA
+### 📋 Forms & Validation
+- **🎣 React Hook Form** - Performant forms with easy validation
+- **✅ Zod** - TypeScript-first schema validation
 
-### 🔄 Interactividad
-- **🖱️ DND Kit**: Modern drag and drop toolkit para React
-- **📊 TanStack Table**: Componentes para tablas complejas
-- **🎨 Recharts**: Biblioteca de gráficos basada en D3
-- **📱 React Hook Form**: Forms performantes con validación fácil
+### 🔄 State Management & Data Fetching
+- **🐻 Zustand** - Simple, scalable state management
+- **🔄 TanStack Query** - Powerful data synchronization for React
+- **🌐 Axios** - Promise-based HTTP client
 
-## 🎯 Casos de Uso
+### 🗄️ Database & Backend
+- **🗄️ Prisma** - Next-generation Node.js and TypeScript ORM
+- **🔐 NextAuth.js** - Complete open-source authentication solution
 
-### 🏢 Empresas
-- **Sitios Corporativos**: Páginas de presentación profesional
-- **Landing Pages**: Páginas de aterrizaje para campañas
-- **Portafolios**: Muestra de proyectos y servicios
+### 🎨 Advanced UI Features
+- **📊 TanStack Table** - Headless UI for building tables and datagrids
+- **🖱️ DND Kit** - Modern drag and drop toolkit for React
+- **📊 Recharts** - Redefined chart library built with React and D3
+- **🖼️ Sharp** - High performance image processing
 
-### 🛍️ E-commerce
-- **Tiendas Online**: Catálogos de productos
-- **Promociones**: Páginas de ofertas especiales
-- **Lanzamientos**: Nuevos productos y servicios
+### 🌍 Internationalization & Utilities
+- **🌍 Next Intl** - Internationalization library for Next.js
+- **📅 Date-fns** - Modern JavaScript date utility library
+- **🪝 ReactUse** - Collection of essential React hooks for modern development
 
-### 🎭 Marketing Digital
-- **Campañas**: Páginas para campañas específicas
-- **Lead Generation**: Captura de contactos
-- **Eventos**: Promoción de eventos y webinars
+## 🎯 Why This Scaffold?
+
+- **🏎️ Fast Development** - Pre-configured tooling and best practices
+- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
+- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
+- **📱 Responsive** - Mobile-first design principles with smooth animations
+- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
+- **🔐 Auth Included** - NextAuth.js for secure authentication flows
+- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
+- **🌍 i18n Ready** - Multi-language support with Next Intl
+- **🚀 Production Ready** - Optimized build and deployment settings
+- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
 
 ## 🚀 Quick Start
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Iniciar servidor de desarrollo
+# Start development server
 npm run dev
 
-# Construir para producción
+# Build for production
 npm run build
 
-# Iniciar servidor de producción
+# Start production server
 npm start
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) para ver la aplicación en funcionamiento.
+Open [http://localhost:3000](http://localhost:3000) to see your application running.
 
-## 📁 Estructura del Proyecto
+## 🤖 Powered by Z.ai
+
+This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
+
+- **💻 Code Generation** - Generate components, pages, and features instantly
+- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
+- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
+- **📝 Documentation** - Auto-generate comprehensive documentation
+- **🚀 Optimization** - Performance improvements and best practices
+
+Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
+
+## 📁 Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── layout.tsx         # Layout principal
-│   └── page.tsx           # Página principal
-├── components/            # Componentes React
-│   ├── ui/               # shadcn/ui components
-│   ├── blocks/           # Bloques reutilizables
-│   ├── Canvas.tsx        # Área de diseño
-│   ├── EditorPanel.tsx   # Panel de edición
-│   ├── LandingAssistant.tsx # Asistente de IA
-│   └── ModulesPanel.tsx  # Panel de módulos
-├── hooks/                 # Custom React hooks
-├── lib/                   # Utilidades y configuraciones
-├── data/                  # Datos y plantillas
-└── types.ts               # Definiciones de tipos
+├── app/                 # Next.js App Router pages
+├── components/          # Reusable React components
+│   └── ui/             # shadcn/ui components
+├── hooks/              # Custom React hooks
+└── lib/                # Utility functions and configurations
 ```
 
-## 🎨 Bloques Disponibles
+## 🎨 Available Features & Components
 
-### 📋 Contenido
-- **Hero Slide**: Hero interactivo con imágenes
-- **Features**: Características y beneficios
-- **Testimonials**: Testimonios de clientes
-- **Pricing**: Tablas de precios
-- **FAQ**: Preguntas frecuentes
-- **Stats**: Estadísticas y métricas
+This scaffold includes a comprehensive set of modern web development tools:
 
-### 🎯 Marketing
-- **CTA**: Llamadas a la acción
-- **Countdown**: Cuentas regresivas
-- **Process**: Procesos paso a paso
-- **Timeline**: Líneas de tiempo
-- **Reinforcement**: Bloques de refuerzo
+### 🧩 UI Components (shadcn/ui)
+- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
+- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
+- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
+- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
+- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
+- **Data Display**: Badge, Avatar, Calendar
 
-### 🛍️ E-commerce
-- **Product Features**: Características de productos
-- **Product Cart**: Carritos de compra
-- **Hero Split**: Heroes divididos
+### 📊 Advanced Data Features
+- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
+- **Charts**: Beautiful visualizations with Recharts
+- **Forms**: Type-safe forms with React Hook Form + Zod validation
 
-### 📞 Contacto
-- **WhatsApp Contact**: Integración con WhatsApp
-- **Contact Forms**: Formularios de contacto
-- **Social Media**: Redes sociales
+### 🎨 Interactive Features
+- **Animations**: Smooth micro-interactions with Framer Motion
+- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
+- **Theme Switching**: Built-in dark/light mode support
 
-### 🎨 Multimedia
-- **Image**: Galerías de imágenes
-- **YouTube**: Videos de YouTube
-- **Hero Banner**: Banners principales
+### 🔐 Backend Integration
+- **Authentication**: Ready-to-use auth flows with NextAuth.js
+- **Database**: Type-safe database operations with Prisma
+- **API Client**: HTTP requests with Axios + TanStack Query
+- **State Management**: Simple and scalable with Zustand
 
-### 🏗️ Estructura
-- **Navigation**: Menús de navegación
-- **Footer**: Pies de página
-- **Hero Banner**: Banners principales
+### 🌍 Production Features
+- **Internationalization**: Multi-language support with Next Intl
+- **Image Optimization**: Automatic image processing with Sharp
+- **Type Safety**: End-to-end TypeScript with Zod validation
+- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
 
-## 🤖 Características de IA
+## 🤝 Get Started with Z.ai
 
-### 📝 Generación de Contenido
-- **Descripción a Landing**: Convierte descripciones simples en landings completas
-- **Contenido Persuasivo**: Genera textos efectivos y profesionales
-- **Optimización SEO**: Contenido optimizado para motores de búsqueda
-
-### 🎨 Diseño Inteligente
-- **Selección de Imágenes**: Búsqueda automática de imágenes relevantes
-- **Paletas de Colores**: Combinaciones de colores armoniosas
-- **Tipografía**: Selección inteligente de fuentes
-
-### 🔍 Análisis y Mejora
-- **Sugerencias de Mejora**: Recomendaciones para optimizar el contenido
-- **A/B Testing**: Sugerencias para pruebas de variantes
-- **Análisis de Rendimiento**: Métricas y optimización
-
-## 🚀 Despliegue
-
-### 🐳 Docker
-```bash
-# Construir imagen
-docker build -t whabot-landing-builder .
-
-# Ejecutar contenedor
-docker run -p 3000:3000 whabot-landing-builder
-```
-
-### 🌐 Vercel
-1. Conectar repositorio a Vercel
-2. Configurar variables de entorno
-3. Desplegar automáticamente
-
-### 🚀 Servidor Propio
-```bash
-# Construir aplicación
-npm run build
-
-# Iniciar en producción
-npm start
-```
-
-## 🔧 Configuración
-
-### Variables de Entorno
-```env
-# API Keys
-OPENAI_API_KEY=tu_openai_api_key
-UNSPLASH_ACCESS_KEY=tu_unsplash_access_key
-
-# Base de Datos
-DATABASE_URL=tu_database_url
-
-# Autenticación
-NEXTAUTH_URL=tu_nextauth_url
-NEXTAUTH_SECRET=tu_nextauth_secret
-```
-
-### 🎨 Personalización
-- **Temas**: Personaliza colores y fuentes
-- **Bloques**: Crea bloques personalizados
-- **Plantillas**: Diseña tus propias plantillas
-- **API**: Extiende con APIs propias
-
-## 🤝 Contribuir
-
-1. Fork del repositorio
-2. Crear una rama (`git checkout -b feature/AmazingFeature`)
-3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abrir un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la MIT License - ver el archivo [LICENSE](LICENSE) para detalles.
-
-## 🙏 Agradecimientos
-
-- **Next.js Team**: Por el excelente framework
-- **shadcn**: Por los componentes de UI de alta calidad
-- **OpenAI**: Por la tecnología de IA
-- **Unsplash**: Por las imágenes gratuitas
-- **Tailwind CSS**: Por el framework de CSS utility-first
+1. **Clone this scaffold** to jumpstart your project
+2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
+3. **Start building** with intelligent code generation and assistance
+4. **Deploy with confidence** using the production-ready setup
 
 ---
 
-🏗️ Construido con ❤️ para la comunidad de desarrolladores. 
-Superchargado por Whabot 🚀
+Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀

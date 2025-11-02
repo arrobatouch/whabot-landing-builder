@@ -39,193 +39,11 @@ const modules = [
 ]
 
 export default function Home() {
-  const [blocks, setBlocks] = useState<BlockType[]>([
-    {
-      id: 'block-hero',
-      type: 'hero-slide',
-      content: {
-        title: '🏖️ Alquileres Temporarios Las Gaviotas',
-        subtitle: 'Complejos Océano & Médano 29 — Tu descanso frente al mar',
-        description: 'En Las Gaviotas, entre Mar Azul y Mar de las Pampas, te esperan nuestros complejos Océano y Médano 29, dos espacios diseñados para que disfrutes la naturaleza, el confort y la tranquilidad de la costa todo el año.',
-        backgroundImage: 'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=1920&h=1080&fit=crop',
-        primaryButtonText: 'Ver Complejos',
-        primaryButtonUrl: '#complejos',
-        secondaryButtonText: 'Reservar Ahora',
-        secondaryButtonUrl: '#contacto',
-        styles: {
-          backgroundColor: 'bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50',
-          paddingY: 'py-20',
-          paddingX: 'px-6',
-          textAlign: 'text-center'
-        }
-      },
-      position: 0
-    },
-    {
-      id: 'block-complejos',
-      type: 'product-features',
-      content: {
-        title: 'Nuestros Complejos',
-        subtitle: 'Dos opciones únicas para tu descanso perfecto',
-        features: [
-          {
-            id: 'oceano',
-            title: '🌊 Complejo Océano',
-            description: 'Elegancia y confort a pasos del mar. Ideal para parejas o familias pequeñas.',
-            features: [
-              '📍 50 metros del mar, sobre Calle 32',
-              '🛏️ Departamentos para 2-4 personas',
-              '🌞 Balcones con vista al mar y parrilla',
-              '❄️ Aire acondicionado frío/calor',
-              '📺 Smart TV + WiFi fibra óptica',
-              '🏊‍♂️ Piscina climatizada exterior',
-              '🚗 Estacionamiento privado seguro'
-            ],
-            price: 'Desde $95.000 por noche',
-            image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
-            buttonText: 'Ver Detalles',
-            buttonUrl: '#oceano'
-          },
-          {
-            id: 'medano',
-            title: '🏝️ Complejo Médano 29',
-            description: 'Diseño moderno rodeado de pinos, a solo tres cuadras de la playa.',
-            features: [
-              '📍 Calle 29 entre Punta del Este y Copacabana',
-              '🛋️ Cabañas dúplex para 4-6 personas',
-              '🍖 Deck privado y parrilla individual',
-              '🧺 Zona de juegos para niños',
-              '🐶 Pet Friendly (con reserva)',
-              '📡 WiFi + Smart TV + calefacción',
-              '🧼 Servicio de limpieza opcional'
-            ],
-            price: 'Desde $115.000 por noche',
-            image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop',
-            buttonText: 'Ver Detalles',
-            buttonUrl: '#medano'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-white',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      },
-      position: 1
-    },
-    {
-      id: 'block-promocion',
-      type: 'countdown',
-      content: {
-        title: '🎁 Promoción de Lanzamiento — Temporada 2025',
-        subtitle: 'No te pierdas esta oportunidad única',
-        description: 'Reservando desde el 1 al 30 de noviembre de 2025, obtené increíbles beneficios en cualquiera de nuestros complejos.',
-        offer: '15% OFF + Desayuno Artesanal Incluido',
-        conditions: 'Válido para estadías de 4 noches o más',
-        ctaText: 'Reservar Ahora',
-        ctaUrl: '#contacto',
-        styles: {
-          backgroundColor: 'bg-gradient-to-r from-amber-50 to-orange-50',
-          paddingY: 'py-16',
-          paddingX: 'px-6',
-          textAlign: 'text-center'
-        }
-      },
-      position: 2
-    },
-    {
-      id: 'block-diferencias',
-      type: 'features',
-      content: {
-        title: '🧭 Qué nos diferencia',
-        subtitle: 'Por qué elegir nuestros complejos',
-        features: [
-          {
-            id: 'ubicacion',
-            title: '🌊 Ubicación privilegiada',
-            description: 'A pocos pasos de la playa y cerca del centro de Mar de las Pampas'
-          },
-          {
-            id: 'departamentos',
-            title: '🏡 Departamentos amplios y equipados',
-            description: 'Diseño moderno y detalles cuidados para tu comodidad'
-          },
-          {
-            id: 'atencion',
-            title: '💬 Atención personalizada',
-            description: 'Trato directo con los dueños para una experiencia única'
-          },
-          {
-            id: 'seguridad',
-            title: '🔒 Seguridad y tranquilidad',
-            description: 'Ambiente seguro y pacífico para disfrutar tus vacaciones'
-          },
-          {
-            id: 'sustentable',
-            title: '🌱 Respeto por el entorno natural',
-            description: 'Energía eficiente y gestión sustentable del complejo'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-slate-50',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      },
-      position: 3
-    },
-    {
-      id: 'block-contacto',
-      type: 'whatsapp-contact',
-      content: {
-        title: '📅 Reservas & Contacto',
-        description: 'Consultá disponibilidad y tarifas actualizadas. ¡Estamos para ayudarte!',
-        whatsappNumber: '+54 9 11 5555-9000',
-        defaultMessage: 'Hola, estoy interesado en reservar en sus complejos en Las Gaviotas. ¿Podrían darme más información?',
-        buttonText: 'Contactar por WhatsApp',
-        leftImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop',
-        leftImageAlt: 'Playa Las Gaviotas',
-        styles: {
-          backgroundColor: 'bg-white',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      },
-      position: 4
-    },
-    {
-      id: 'block-footer',
-      type: 'footer',
-      content: {
-        companyName: 'Alquileres Las Gaviotas',
-        description: 'Complejos Océano & Médano 29 - Tu descanso frente al mar',
-        address: 'Las Gaviotas, Partido de Villa Gesell, Buenos Aires',
-        email: 'reservas@lasgaviotasoceano.com.ar',
-        phone: '+54 9 11 5555-9000',
-        socialLinks: [
-          { platform: 'facebook', url: '#' },
-          { platform: 'instagram', url: '#' }
-        ],
-        quickLinks: [
-          { text: 'Complejo Océano', url: '#oceano' },
-          { text: 'Complejo Médano 29', url: '#medano' },
-          { text: 'Promociones', url: '#promociones' },
-          { text: 'Contacto', url: '#contacto' }
-        ],
-        styles: {
-          backgroundColor: 'bg-slate-900',
-          textColor: 'text-white',
-          paddingY: 'py-12',
-          paddingX: 'px-6'
-        }
-      },
-      position: 5
-    }
-  ])
+  const [blocks, setBlocks] = useState<BlockType[]>([])
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('blank')
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
-  const [showAssistant, setShowAssistant] = useState(false)
+  const [showAssistant, setShowAssistant] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
   const [businessInfo, setBusinessInfo] = useState<any>(null)
   const [showGenerator, setShowGenerator] = useState(false)
@@ -292,14 +110,31 @@ export default function Home() {
   }, [selectedTemplate])
 
   // Función para generar landing con IA
-  const handleGenerateLanding = async (prompt: string, processedContent?: any) => {
+  const handleGenerateLanding = async (prompt: string, processedContent?: any, blocks?: any) => {
     try {
       console.log('handleGenerateLanding called with prompt:', prompt)
       console.log('Processed content:', processedContent)
+      console.log('Blocks provided:', blocks ? blocks.length : 'none')
       console.log('Current state - isGenerating:', isGenerating, 'showGenerator:', showGenerator)
       
       setIsGenerating(true)
       setShowGenerator(true)
+      
+      // Si se proporcionan bloques, usarlos directamente
+      if (blocks && Array.isArray(blocks) && blocks.length > 0) {
+        console.log('Using provided blocks:', blocks.length, 'blocks')
+        setBlocks(blocks)
+        setBusinessInfo(processedContent?.businessInfo || {})
+        
+        // Simular progreso rápido
+        dispatchProgressEvent('finalizing', 100, '¡Landing generada con éxito!', 'complete')
+        
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        setIsGenerating(false)
+        setShowAssistant(false)
+        return
+      }
       
       // Timeout de seguridad para evitar que el sistema se quede congelado
       const safetyTimeout = setTimeout(() => {
@@ -384,7 +219,12 @@ export default function Home() {
             // Ocultar el asistente automáticamente después de la generación para mostrar los bloques
             setShowAssistant(false)
             
-            // NO ocultar automáticamente el generador después de la finalización
+            // Cerrar el generador después de un breve delay para mostrar el completion
+            setTimeout(() => {
+              setShowGenerator(false)
+            }, 2000)
+            
+            // NO ocultar automáticamente el generador inmediatamente después de la finalización
             // Permitir que el usuario vea los bloques generados y decida qué hacer
           } else {
             console.error('Invalid blocks structure in response:', result)
@@ -530,7 +370,8 @@ export default function Home() {
         onTemplateChange={setSelectedTemplate}
         onBackToAssistant={handleBackToAssistant}
         onPreview={handlePreviewLanding}
-        showBackButton={!showAssistant && blocks.length === 0}
+        showBackButton={(!showAssistant) && blocks.length === 0}
+        showAssistant={showAssistant}
         blocks={blocks}
         setBlocks={setBlocks}
       />
@@ -538,7 +379,14 @@ export default function Home() {
       {/* Landing Generator Modal */}
       <LandingGenerator 
         isOpen={showGenerator}
-        onClose={() => setShowGenerator(false)}
+        onClose={() => {
+          setShowGenerator(false)
+          setIsGenerating(false)
+        }}
+        onComplete={() => {
+          setShowGenerator(false)
+          setIsGenerating(false)
+        }}
       />
       
       {/* Mostrar Asistente IA solo si está activo y no hay bloques generados */}
@@ -590,41 +438,45 @@ export default function Home() {
                 </div>
                 
                 {/* Mobile Editor Panel - Bottom Sheet */}
-                {selectedBlock && (
-                  <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border">
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-none"
-                      onClick={() => setShowMobileEditor(!showMobileEditor)}
-                    >
-                      {showMobileEditor ? 'Ocultar Editor' : 'Mostrar Editor'}
-                    </Button>
-                    {showMobileEditor && (
-                      <div className="h-96 overflow-y-auto">
-                        <EditorPanel 
-                          blocks={blocks}
-                          setBlocks={setBlocks}
-                          selectedBlock={selectedBlock}
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border">
+                  <Button
+                    variant="outline"
+                    className="w-full rounded-none"
+                    onClick={() => setShowMobileEditor(!showMobileEditor)}
+                  >
+                    {showMobileEditor ? 'Ocultar Editor' : 'Mostrar Editor'}
+                  </Button>
+                  {showMobileEditor && (
+                    <div className="h-96 overflow-y-auto">
+                      <EditorPanel 
+                        selectedBlock={selectedBlock}
+                        blocks={blocks}
+                        setBlocks={setBlocks}
+                        onAddCustomButton={handleAddCustomButton}
+                        customButtons={customButtons}
+                        setCustomButtons={setCustomButtons}
+                      />
+                    </div>
+                  )}
+                </div>
                 
                 {/* Desktop Editor Panel */}
                 <div className="hidden lg:block">
                   <EditorPanel 
+                    selectedBlock={selectedBlock}
                     blocks={blocks}
                     setBlocks={setBlocks}
-                    selectedBlock={selectedBlock}
+                    onAddCustomButton={handleAddCustomButton}
+                    customButtons={customButtons}
+                    setCustomButtons={setCustomButtons}
                   />
                 </div>
               </div>
               
               <DragOverlay>
                 {activeId ? (
-                  <div className="p-3 border border-border rounded-lg bg-card shadow-lg opacity-90">
-                    {modules.find(m => m.type === activeId)?.name || 'Bloque'}
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-sm text-primary-foreground">
+                    Arrastrando módulo...
                   </div>
                 ) : null}
               </DragOverlay>
@@ -633,90 +485,83 @@ export default function Home() {
         </>
       )}
 
-      {/* Overlay de generación progresiva */}
-      {showGenerator && (
-        <LandingGenerator
-          blocks={blocks}
-          onBlocksChange={setBlocks}
-          onEditMode={() => {
-            setShowGenerator(false)
-            setShowAssistant(false)
-          }}
-          isGenerating={isGenerating}
-          businessInfo={businessInfo}
-        />
-      )}
-
       {/* Landing Preview Modal */}
       <LandingPreview 
-        blocks={blocks}
         isOpen={showPreview}
         onClose={() => setShowPreview(false)}
+        blocks={blocks}
+        businessInfo={businessInfo}
       />
     </div>
   )
 }
 
+// Función para obtener contenido por defecto para cada tipo de bloque
 function getDefaultContent(type: string): any {
   switch (type) {
     case 'navigation':
       return {
-        logoPosition: 'left' as const,
-        menuPosition: 'right' as const,
-        companyName: 'Mi Empresa',
-        logoUrl: '',
-        logoUpload: null,
-        customButtons: [
-          { id: 'btn-1', label: 'Inicio', url: '#' },
-          { id: 'btn-2', label: 'Servicios', url: '#' },
-          { id: 'btn-3', label: 'Contacto', url: '#' }
+        logo: '',
+        logoAlt: 'Logo',
+        menuItems: [
+          { id: '1', label: 'Inicio', url: '#' },
+          { id: '2', label: 'Servicios', url: '#' },
+          { id: '3', label: 'Sobre Nosotros', url: '#' },
+          { id: '4', label: 'Contacto', url: '#' }
         ],
-        showLandings: true,
-        backgroundColor: '#ffffff',
-        textColor: '#000000',
-        paddingY: 'py-4',
-        paddingX: 'px-6',
-        border: 'border-b',
-        borderColor: '#e5e7eb',
-        shadow: 'shadow-sm',
-        borderRadius: 'rounded-none',
-        opacity: 'opacity-100',
-        hoverTransform: 'none'
+        ctaButton: {
+          label: 'Comenzar',
+          url: '#'
+        },
+        styles: {
+          backgroundColor: 'bg-background',
+          textColor: 'text-foreground',
+          paddingY: 'py-4'
+        }
       }
     case 'hero-slide':
       return {
-        title: 'Título Principal',
-        subtitle: 'Subtítulo Atractivo',
-        description: 'Descripción detallada de tu producto o servicio.',
-        backgroundImage: '',
-        primaryButtonText: 'Comenzar',
-        primaryButtonUrl: '#',
-        secondaryButtonText: 'Más Información',
-        secondaryButtonUrl: '#',
+        slides: [
+          {
+            id: 'slide-1',
+            backgroundImage: '',
+            title: 'Título Principal',
+            subtitle: 'Subtítulo Atractivo',
+            buttonText: 'Comenzar',
+            buttonType: 'external' as const,
+            buttonTarget: '#',
+            textColor: 'light' as const,
+            imageFilter: 'none' as const
+          }
+        ],
+        navigationStyle: 'arrows' as const,
+        autoPlay: true,
+        autoPlayInterval: 5000,
+        transitionType: 'fade' as const,
+        transitionSpeed: 500,
+        height: 'viewport' as const,
+        marginTop: 0,
+        marginBottom: 0,
         styles: {
-          backgroundColor: 'bg-gradient-to-br from-blue-600 to-purple-600',
-          paddingY: 'py-20',
-          paddingX: 'px-6',
-          textAlign: 'text-center'
+          backgroundColor: 'bg-background',
+          paddingY: 'py-0',
+          paddingX: 'px-0'
         }
       }
-    case 'features':
+    case 'reinforcement':
       return {
-        title: 'Características',
-        subtitle: 'Lo que nos hace únicos',
+        title: 'Título de Refuerzo',
+        description: 'Descripción detallada del valor que ofreces.',
         features: [
           {
-            id: 'feature-1',
             title: 'Característica 1',
-            description: 'Descripción de la característica principal'
+            description: 'Descripción de la primera característica'
           },
           {
-            id: 'feature-2',
             title: 'Característica 2',
             description: 'Descripción de la segunda característica'
           },
           {
-            id: 'feature-3',
             title: 'Característica 3',
             description: 'Descripción de la tercera característica'
           }
@@ -727,323 +572,25 @@ function getDefaultContent(type: string): any {
           paddingX: 'px-6'
         }
       }
-    case 'testimonials':
+    case 'features':
       return {
-        title: 'Testimonios',
-        subtitle: 'Lo que dicen nuestros clientes',
-        testimonials: [
-          {
-            id: 'testimonial-1',
-            name: 'Cliente Satisfecho',
-            role: 'Profesional',
-            company: 'Empresa',
-            avatar: '',
-            content: 'Excelente servicio, muy recomendado.'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-muted/20',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'cta':
-      return {
-        title: '¿Listo para comenzar?',
-        subtitle: 'Únete a nosotros hoy mismo',
-        buttonText: 'Comenzar Ahora',
-        buttonUrl: '#',
-        styles: {
-          backgroundColor: 'bg-primary',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'pricing':
-      return {
-        title: 'Planes y Precios',
-        subtitle: 'Elige el plan que mejor se adapte a tus necesidades',
-        plans: [
-          {
-            id: 'plan-1',
-            name: 'Básico',
-            price: '$99',
-            frequency: '/mes',
-            features: ['Característica 1', 'Característica 2', 'Característica 3'],
-            buttonText: 'Seleccionar',
-            buttonUrl: '#',
-            highlighted: false
-          },
-          {
-            id: 'plan-2',
-            name: 'Profesional',
-            price: '$199',
-            frequency: '/mes',
-            features: ['Característica 1', 'Característica 2', 'Característica 3', 'Característica 4'],
-            buttonText: 'Seleccionar',
-            buttonUrl: '#',
-            highlighted: true
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'whatsapp-contact':
-      return {
-        title: 'Contacto',
-        description: '¿Tenés preguntas? Contactanos',
-        whatsappNumber: '+54 9 11 1234-5678',
-        defaultMessage: 'Hola, estoy interesado en sus servicios.',
-        buttonText: 'Contactar por WhatsApp',
-        leftImage: '',
-        leftImageAlt: 'Contacto',
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'footer':
-      return {
-        companyName: 'Mi Empresa',
-        description: 'Descripción de la empresa',
-        address: 'Dirección de la empresa',
-        email: 'contacto@empresa.com',
-        phone: '+54 9 11 1234-5678',
-        socialLinks: [
-          { platform: 'facebook', url: '#' },
-          { platform: 'instagram', url: '#' }
-        ],
-        quickLinks: [
-          { text: 'Inicio', url: '#' },
-          { text: 'Servicios', url: '#' },
-          { text: 'Contacto', url: '#' }
-        ],
-        styles: {
-          backgroundColor: 'bg-slate-900',
-          textColor: 'text-white',
-          paddingY: 'py-12',
-          paddingX: 'px-6'
-        }
-      }
-    case 'image':
-      return {
-        imageUrl: '',
-        imageAlt: 'Imagen',
-        caption: 'Pie de imagen',
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-8',
-          paddingX: 'px-6'
-        }
-      }
-    case 'stats':
-      return {
-        title: 'Nuestros Números',
-        subtitle: 'Estadísticas que hablan por sí solas',
-        stats: [
-          {
-            id: 'stat-1',
-            value: '100+',
-            label: 'Clientes Felices'
-          },
-          {
-            id: 'stat-2',
-            value: '50+',
-            label: 'Proyectos Completados'
-          },
-          {
-            id: 'stat-3',
-            value: '5+',
-            label: 'Años de Experiencia'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'timeline':
-      return {
-        title: 'Nuestra Historia',
-        subtitle: 'El camino que nos trajo hasta aquí',
-        events: [
-          {
-            id: 'event-1',
-            date: '2020',
-            title: 'Inicio del Proyecto',
-            description: 'Comenzamos con una visión clara'
-          },
-          {
-            id: 'event-2',
-            date: '2021',
-            title: 'Primeros Clientes',
-            description: 'Logramos nuestros primeros clientes satisfechos'
-          },
-          {
-            id: 'event-3',
-            date: '2022',
-            title: 'Expansión',
-            description: 'Creímos y mejoramos nuestros servicios'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'process':
-      return {
-        title: 'Nuestro Proceso',
-        subtitle: 'Cómo trabajamos para lograr los mejores resultados',
-        steps: [
-          {
-            id: 'step-1',
-            title: 'Paso 1',
-            description: 'Descripción del primer paso'
-          },
-          {
-            id: 'step-2',
-            title: 'Paso 2',
-            description: 'Descripción del segundo paso'
-          },
-          {
-            id: 'step-3',
-            title: 'Paso 3',
-            description: 'Descripción del tercer paso'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'faq':
-      return {
-        title: 'Preguntas Frecuentes',
-        subtitle: 'Respuestas a las dudas más comunes',
-        faqs: [
-          {
-            id: 'faq-1',
-            question: '¿Pregunta frecuente 1?',
-            answer: 'Respuesta a la pregunta frecuente 1'
-          },
-          {
-            id: 'faq-2',
-            question: '¿Pregunta frecuente 2?',
-            answer: 'Respuesta a la pregunta frecuente 2'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'social-media':
-      return {
-        title: 'Síguenos en Redes Sociales',
-        subtitle: 'Mantente conectado con nosotros',
-        platforms: [
-          {
-            id: 'social-1',
-            platform: 'facebook',
-            url: '#',
-            followers: '1000+'
-          },
-          {
-            id: 'social-2',
-            platform: 'instagram',
-            url: '#',
-            followers: '2000+'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'youtube':
-      return {
-        title: 'Video Destacado',
-        subtitle: 'Conoce más sobre nosotros',
-        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        videoTitle: 'Video Presentación',
-        videoDescription: 'Descripción del video',
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'product-cart':
-      return {
-        title: 'Productos Destacados',
-        subtitle: 'Nuestra selección especial para ti',
-        products: [
-          {
-            id: 'product-1',
-            name: 'Producto 1',
-            description: 'Descripción del producto 1',
-            price: '$99.99',
-            image: '',
-            buttonText: 'Comprar',
-            buttonUrl: '#'
-          },
-          {
-            id: 'product-2',
-            name: 'Producto 2',
-            description: 'Descripción del producto 2',
-            price: '$149.99',
-            image: '',
-            buttonText: 'Comprar',
-            buttonUrl: '#'
-          }
-        ],
-        styles: {
-          backgroundColor: 'bg-background',
-          paddingY: 'py-16',
-          paddingX: 'px-6'
-        }
-      }
-    case 'countdown':
-      return {
-        title: 'Oferta Especial',
-        subtitle: 'No te pierdas esta oportunidad',
-        description: 'Descripción de la oferta especial',
-        offer: '50% OFF',
-        conditions: 'Válido por tiempo limitado',
-        ctaText: 'Aprovechar Oferta',
-        ctaUrl: '#',
-        styles: {
-          backgroundColor: 'bg-gradient-to-r from-red-50 to-pink-50',
-          paddingY: 'py-16',
-          paddingX: 'px-6',
-          textAlign: 'text-center'
-        }
-      }
-    case 'reinforcement':
-      return {
-        title: '¿Por qué elegirnos?',
-        subtitle: 'Las razones que nos hacen diferentes',
-        description: 'Descripción del bloque de refuerzo',
+        title: 'Nuestras Características',
+        subtitle: 'Descubre lo que nos hace únicos',
         features: [
           {
-            id: 'reinforcement-1',
-            title: 'Ventaja 1',
-            description: 'Descripción de la ventaja 1'
+            icon: '',
+            title: 'Característica 1',
+            description: 'Descripción de la primera característica'
           },
           {
-            id: 'reinforcement-2',
-            title: 'Ventaja 2',
-            description: 'Descripción de la ventaja 2'
+            icon: '',
+            title: 'Característica 2',
+            description: 'Descripción de la segunda característica'
+          },
+          {
+            icon: '',
+            title: 'Característica 3',
+            description: 'Descripción de la tercera característica'
           }
         ],
         styles: {
@@ -1083,6 +630,376 @@ function getDefaultContent(type: string): any {
             image: '',
             buttonText: 'Ver más',
             buttonUrl: '#'
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'countdown':
+      return {
+        title: 'Oferta Especial',
+        subtitle: 'No te pierdas esta oportunidad única',
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 días desde ahora
+        backgroundImage: '',
+        button: {
+          text: 'Aprovechar Oferta',
+          link: '#',
+          linkType: 'external' as const,
+          color: 'bg-primary',
+          hoverColor: 'bg-primary/90'
+        },
+        alignment: 'center' as const,
+        timerStyle: 'digital' as const,
+        timerColors: {
+          numbers: '#ffffff',
+          labels: '#ffffff',
+          background: '#000000'
+        },
+        expiredAction: 'show-message' as const,
+        expiredMessage: 'La oferta ha finalizado',
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'social-media':
+      return {
+        buttonPosition: 'right' as const,
+        buttonMargin: 20,
+        buttonColor: '#25D366',
+        socialLinks: [
+          {
+            id: 'whatsapp',
+            name: 'WhatsApp',
+            icon: '',
+            url: 'https://wa.me/',
+            order: 1
+          },
+          {
+            id: 'facebook',
+            name: 'Facebook',
+            icon: '',
+            url: 'https://facebook.com/',
+            order: 2
+          },
+          {
+            id: 'instagram',
+            name: 'Instagram',
+            icon: '',
+            url: 'https://instagram.com/',
+            order: 3
+          }
+        ],
+        animationType: 'vertical' as const,
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-4',
+          paddingX: 'px-4'
+        }
+      }
+    case 'youtube':
+      return {
+        title: 'Video Destacado',
+        description: 'Mira nuestro video para conocer más sobre nosotros',
+        videoUrl: 'https://youtube.com/watch?v=example',
+        videoId: 'example',
+        visualMode: 'light' as const,
+        controls: {
+          hideControls: false,
+          hideTitle: false,
+          autoPlay: false,
+          muteOnStart: false,
+          loop: false,
+          showRelatedVideos: true,
+          modestBranding: true
+        },
+        size: {
+          preset: 'medium' as const,
+          height: '400',
+          heightUnit: 'px' as const,
+          marginTop: 0,
+          marginBottom: 0
+        },
+        alignment: 'center' as const,
+        advanced: {
+          startTime: 0,
+          language: 'es'
+        },
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'product-cart':
+      return {
+        title: 'Nuestros Productos',
+        subtitle: 'Selecciona los productos que deseas adquirir',
+        whatsappNumber: '+1234567890',
+        products: [
+          {
+            id: 'product-1',
+            name: 'Producto 1',
+            description: 'Descripción del producto 1',
+            price: 99.99,
+            currency: 'USD',
+            image: '',
+            category: 'Categoría 1',
+            inStock: true,
+            features: ['Característica 1', 'Característica 2']
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'testimonials':
+      return {
+        title: 'Testimonios',
+        subtitle: 'Lo que dicen nuestros clientes',
+        testimonials: [
+          {
+            name: 'Cliente 1',
+            role: 'Profesión',
+            company: 'Empresa',
+            content: 'Excelente servicio, muy recomendado.',
+            avatar: ''
+          },
+          {
+            name: 'Cliente 2',
+            role: 'Profesión',
+            company: 'Empresa',
+            content: 'La mejor experiencia que he tenido.',
+            avatar: ''
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'cta':
+      return {
+        title: '¿Listo para comenzar?',
+        description: 'Únete a miles de clientes satisfechos.',
+        buttonText: 'Comenzar Ahora',
+        buttonLink: '#',
+        backgroundImage: '',
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'pricing':
+      return {
+        title: 'Planes y Precios',
+        subtitle: 'Elige el plan que mejor se adapte a tus necesidades',
+        plans: [
+          {
+            icon: '',
+            name: 'Básico',
+            price: '$9.99',
+            period: '/mes',
+            description: 'Perfecto para comenzar',
+            features: ['Característica 1', 'Característica 2'],
+            buttonText: 'Comenzar',
+            buttonLink: '#',
+            featured: false
+          },
+          {
+            icon: '',
+            name: 'Profesional',
+            price: '$19.99',
+            period: '/mes',
+            description: 'Para profesionales',
+            features: ['Todas las características', 'Soporte prioritario'],
+            buttonText: 'Comenzar',
+            buttonLink: '#',
+            featured: true
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'whatsapp-contact':
+      return {
+        title: 'Contacto vía WhatsApp',
+        description: 'Habla con nosotros directamente por WhatsApp',
+        whatsappNumber: '+1234567890',
+        defaultMessage: 'Hola, estoy interesado en sus servicios.',
+        buttonText: 'Contactar por WhatsApp',
+        leftImage: '',
+        leftImageAlt: 'Imagen de contacto',
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'footer':
+      return {
+        logo: '',
+        company: 'Tu Empresa',
+        description: 'Descripción de tu empresa',
+        links: [
+          {
+            title: 'Enlaces Rápidos',
+            items: [
+              { text: 'Inicio', url: '#' },
+              { text: 'Servicios', url: '#' },
+              { text: 'Sobre Nosotros', url: '#' },
+              { text: 'Contacto', url: '#' }
+            ]
+          }
+        ],
+        socialLinks: [
+          {
+            platform: 'Facebook',
+            url: 'https://facebook.com/',
+            icon: ''
+          },
+          {
+            platform: 'Twitter',
+            url: 'https://twitter.com/',
+            icon: ''
+          },
+          {
+            platform: 'Instagram',
+            url: 'https://instagram.com/',
+            icon: ''
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-8',
+          paddingX: 'px-6'
+        }
+      }
+    case 'image':
+      return {
+        title: 'Título de la Imagen',
+        description: 'Descripción de la imagen',
+        image: '',
+        alt: 'Imagen descriptiva',
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'stats':
+      return {
+        title: 'Nuestros Logros',
+        stats: [
+          {
+            icon: '',
+            value: '100+',
+            label: 'Clientes Satisfechos'
+          },
+          {
+            icon: '',
+            value: '50+',
+            label: 'Proyectos Completados'
+          },
+          {
+            icon: '',
+            value: '5+',
+            label: 'Años de Experiencia'
+          },
+          {
+            icon: '',
+            value: '24/7',
+            label: 'Soporte Disponible'
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'timeline':
+      return {
+        title: 'Nuestra Historia',
+        events: [
+          {
+            icon: '',
+            date: '2020',
+            title: 'Fundación',
+            description: 'Iniciamos nuestra empresa con una visión clara.'
+          },
+          {
+            icon: '',
+            date: '2021',
+            title: 'Crecimiento',
+            description: 'Expandimos nuestros servicios y reached new milestones.'
+          },
+          {
+            icon: '',
+            date: '2022',
+            title: 'Innovación',
+            description: 'Lanzamos nuevos productos y servicios innovadores.'
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'process':
+      return {
+        title: 'Nuestro Proceso',
+        subtitle: 'Cómo trabajamos para lograr tus objetivos',
+        steps: [
+          {
+            icon: '',
+            title: 'Paso 1',
+            description: 'Descripción del primer paso'
+          },
+          {
+            icon: '',
+            title: 'Paso 2',
+            description: 'Descripción del segundo paso'
+          },
+          {
+            icon: '',
+            title: 'Paso 3',
+            description: 'Descripción del tercer paso'
+          }
+        ],
+        styles: {
+          backgroundColor: 'bg-background',
+          paddingY: 'py-16',
+          paddingX: 'px-6'
+        }
+      }
+    case 'faq':
+      return {
+        title: 'Preguntas Frecuentes',
+        faqs: [
+          {
+            question: '¿Cuál es el tiempo de entrega?',
+            answer: 'El tiempo de entrega varía según el proyecto, pero generalmente es de 2-4 semanas.'
+          },
+          {
+            question: '¿Ofrecen soporte técnico?',
+            answer: 'Sí, ofrecemos soporte técnico 24/7 para todos nuestros clientes.'
+          },
+          {
+            question: '¿Aceptan proyectos personalizados?',
+            answer: 'Sí, aceptamos proyectos personalizados según las necesidades del cliente.'
           }
         ],
         styles: {

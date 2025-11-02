@@ -9,6 +9,7 @@ import { Loader2, Sparkles, CheckCircle, X, Play, Pause } from 'lucide-react'
 interface LandingGeneratorProps {
   isOpen: boolean
   onClose: () => void
+  onComplete?: () => void
 }
 
 interface GenerationStep {
@@ -27,7 +28,7 @@ interface ActivityItem {
   timestamp: Date
 }
 
-export function LandingGenerator({ isOpen, onClose }: LandingGeneratorProps) {
+export function LandingGenerator({ isOpen, onClose, onComplete }: LandingGeneratorProps) {
   const [totalProgress, setTotalProgress] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
@@ -135,6 +136,14 @@ export function LandingGenerator({ isOpen, onClose }: LandingGeneratorProps) {
           setTimeout(() => {
             setIsPlaying(false)
             addActivity('🎉', '¡Landing generada con éxito!')
+            
+            // Cerrar automáticamente después de un breve delay
+            setTimeout(() => {
+              if (onComplete) {
+                onComplete()
+              }
+              onClose()
+            }, 1500)
           }, 1000)
         }
 

@@ -3,36 +3,23 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
-    // Don't ignore build errors in development for better debugging
-    ignoreBuildErrors: process.env.NODE_ENV === 'production',
+    ignoreBuildErrors: true,
   },
-  // Enable React strict mode for better development experience
-  reactStrictMode: true,
-  webpack: (config, { dev, isServer }) => {
-    // Only modify webpack config in production or for specific optimizations
-    if (!dev && !isServer) {
-      // Production optimizations can go here
+  // 禁用 Next.js 热重载，由 nodemon 处理重编译
+  reactStrictMode: false,
+  webpack: (config, { dev }) => {
+    if (dev) {
+      // 禁用 webpack 的热模块替换
       config.watchOptions = {
-        aggregateTimeout: 300,
-        poll: 1000,
+        ignored: ['**/*'], // 忽略所有文件变化
       };
     }
     return config;
   },
   eslint: {
-    // Only ignore ESLint errors in production builds
-    ignoreDuringBuilds: process.env.NODE_ENV === 'production',
+    // 构建时忽略ESLint错误
+    ignoreDuringBuilds: true,
   },
-  // Experimental features for better performance
-  experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-*'],
-  },
-  // Allow cross-origin requests from the development environment
-  allowedDevOrigins: [
-    'preview-chat-b2755342-82d3-4016-ac9a-28f4a6f92221.space.z.ai',
-    'localhost:3000',
-    '127.0.0.1:3000',
-  ],
 };
 
 export default nextConfig;

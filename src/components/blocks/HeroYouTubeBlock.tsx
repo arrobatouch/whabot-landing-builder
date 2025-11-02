@@ -128,9 +128,10 @@ export function HeroYouTubeBlock({ content, onContentChange }: HeroYouTubeBlockP
 
   // Calculate video height based on preset or custom
   const getVideoHeight = (): string => {
-    const preset = content.size?.preset || 'medium'
-    const customHeight = content.size?.height || '400'
-    const unit = content.size?.heightUnit || 'px'
+    const size = content.size || {}
+    const preset = size.preset || 'medium'
+    const customHeight = size.height || '400'
+    const unit = size.heightUnit || 'px'
     
     switch (preset) {
       case 'small':
@@ -150,8 +151,8 @@ export function HeroYouTubeBlock({ content, onContentChange }: HeroYouTubeBlockP
     <section 
       className={sectionClasses}
       style={{
-        marginTop: `${content.size.marginTop}px`,
-        marginBottom: `${content.size.marginBottom}px`
+        marginTop: (content.size && content.size.marginTop) ? `${content.size.marginTop}px` : '0px',
+        marginBottom: (content.size && content.size.marginBottom) ? `${content.size.marginBottom}px` : '0px'
       }}
     >
       <div className={containerClasses}>
