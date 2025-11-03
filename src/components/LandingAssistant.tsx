@@ -42,6 +42,34 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
               break
             }
           }
+          
+          // Extraer imágenes para el slider (buscar URLs de imágenes)
+          const heroImages = []
+          for (let i = 1; i <= 10; i++) {
+            const imageLine = lines[index + i]
+            if (imageLine && (imageLine.includes('http') && imageLine.includes('.jpg') || imageLine.includes('.png') || imageLine.includes('.webp'))) {
+              // Extraer URL de imagen
+              const urlMatch = imageLine.match(/(https?:\/\/[^\s]+\.(jpg|jpeg|png|webp))/i)
+              if (urlMatch) {
+                heroImages.push(urlMatch[1])
+                console.log("✅ PARSER: Imagen extraída:", urlMatch[1])
+              }
+            }
+          }
+          
+          // Si no hay imágenes en el contenido, usar imágenes por defecto del negocio
+          if (heroImages.length === 0) {
+            // Imágenes por defecto para diferentes tipos de negocios
+            const defaultImages = [
+              'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&h=1080&fit=crop', // Negocio/Empresa
+              'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop', // Profesional
+              'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&h=1080&fit=crop'  // Moderno
+            ]
+            data.heroImages = defaultImages
+            console.log("✅ PARSER: Usando imágenes por defecto:", defaultImages)
+          } else {
+            data.heroImages = heroImages
+          }
         }
         
         // Extraer introducción (2⃣ Bloque de Introducción)
@@ -179,20 +207,42 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
     
     // 🧠 BLOQUES INTELIGENTES 100% DINÁMICOS - VERSIÓN 3.2.0
     const blocks = [
-      // 1⃣ Hero Slide - Usa título dinámico del chat
+      // 1⃣ Hero Slide - Usa título dinámico del chat con 3 imágenes
       {
         id: 'hero-slide-dynamic-1',
         type: 'hero-slide',
         content: {
           slides: [
             {
-              id: 'slide-main',
-              backgroundImage: '',
+              id: 'slide-1',
+              backgroundImage: (landingData.heroImages && landingData.heroImages[0]) || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&h=1080&fit=crop',
               title: landingData.heroTitle || 'Tu Negocio',
               subtitle: landingData.heroSubtitle || 'Líder en el sector',
               buttonText: 'Conocer Más',
               buttonType: 'external' as const,
               buttonTarget: '#features',
+              textColor: 'light' as const,
+              imageFilter: 'none' as const
+            },
+            {
+              id: 'slide-2',
+              backgroundImage: (landingData.heroImages && landingData.heroImages[1]) || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop',
+              title: landingData.heroTitle || 'Soluciones Profesionales',
+              subtitle: landingData.heroSubtitle || 'Calidad y confianza en cada proyecto',
+              buttonText: 'Ver Servicios',
+              buttonType: 'external' as const,
+              buttonTarget: '#features',
+              textColor: 'light' as const,
+              imageFilter: 'none' as const
+            },
+            {
+              id: 'slide-3',
+              backgroundImage: (landingData.heroImages && landingData.heroImages[2]) || 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&h=1080&fit=crop',
+              title: landingData.heroTitle || 'Innovación y Tecnología',
+              subtitle: landingData.heroSubtitle || 'Transformando ideas en realidad',
+              buttonText: 'Contactar',
+              buttonType: 'external' as const,
+              buttonTarget: '#contact',
               textColor: 'light' as const,
               imageFilter: 'none' as const
             }
