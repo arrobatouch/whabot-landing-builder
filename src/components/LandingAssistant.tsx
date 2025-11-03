@@ -13,103 +13,186 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
     console.log("🎯 LANDING ASSISTANT: Recibiendo businessInfo:", businessInfo)
     console.log("📋 LANDING ASSISTANT: landingContent recibido:", businessInfo.landingContent?.substring(0, 100) + "...")
     
-    // 🎯 EXTRAER DATOS DINÁMICOS DEL landingContent
+    // 🎯 EXTRAER DATOS DINÁMICOS DEL landingContent - VERSIÓN 3.2.0
     const extractLandingData = (content: string) => {
       const lines = content.split('\n').filter(line => line.trim())
       const data: any = {}
       
+      console.log("🔍 PARSER: Analizando contenido:", content.substring(0, 200) + "...")
+      
       lines.forEach((line, index) => {
-        // Extraer título principal
-        if (line.includes('1⃣') || line.includes('Hero Principal')) {
-          const titleMatch = lines[index + 1]?.match(/^(.+)$/)
-          const subtitleMatch = lines[index + 2]?.match(/^(.+)$/)
-          data.heroTitle = titleMatch?.[1] || 'Tu Negocio'
-          data.heroSubtitle = subtitleMatch?.[1] || 'Descripción principal'
+        // Extraer título principal (1⃣ Hero Principal)
+        if (line.includes('1⃣') || line.toLowerCase().includes('hero principal')) {
+          console.log("🎯 PARSER: Encontrado Hero Principal en línea:", line)
+          // Buscar el título en las siguientes 3 líneas
+          for (let i = 1; i <= 3; i++) {
+            const titleLine = lines[index + i]
+            if (titleLine && !titleLine.match(/^[0-9⃣🔥💎🌟]/) && titleLine.length > 5) {
+              data.heroTitle = titleLine.trim()
+              console.log("✅ PARSER: Título extraído:", data.heroTitle)
+              break
+            }
+          }
+          // Buscar subtítulo
+          for (let i = 2; i <= 4; i++) {
+            const subtitleLine = lines[index + i]
+            if (subtitleLine && subtitleLine !== data.heroTitle && subtitleLine.length > 10) {
+              data.heroSubtitle = subtitleLine.trim()
+              console.log("✅ PARSER: Subtítulo extraído:", data.heroSubtitle)
+              break
+            }
+          }
         }
         
-        // Extraer introducción
-        if (line.includes('2⃣') || line.includes('Introducción')) {
-          const introMatch = lines[index + 1]?.match(/^(.+)$/)
-          data.introduction = introMatch?.[1] || 'Introducción del negocio'
+        // Extraer introducción (2⃣ Bloque de Introducción)
+        if (line.includes('2⃣') || line.toLowerCase().includes('introducción') || line.toLowerCase().includes('bloque de introducción')) {
+          console.log("🎯 PARSER: Encontrada Introducción en línea:", line)
+          // Buscar el texto de introducción en las siguientes 3 líneas
+          for (let i = 1; i <= 3; i++) {
+            const introLine = lines[index + i]
+            if (introLine && introLine.length > 15 && !introLine.match(/^[0-9⃣🔥💎🌟]/)) {
+              data.introduction = introLine.trim()
+              console.log("✅ PARSER: Introducción extraída:", data.introduction)
+              break
+            }
+          }
         }
         
-        // Extraer características
-        if (line.includes('3⃣') || line.includes('Características')) {
+        // Extraer características (3⃣ Características con emojis)
+        if (line.includes('3⃣') || line.toLowerCase().includes('características')) {
+          console.log("🎯 PARSER: Encontradas Características en línea:", line)
           const features = []
           let i = index + 1
-          while (i < lines.length && lines[i]?.match(/^[🍏🚚🌱⭐]/)) {
-            const featureMatch = lines[i]?.match(/^[🍏🚚🌱⭐]\s*(.+)$/)
-            if (featureMatch) {
-              features.push({
-                icon: lines[i]?.charAt(0) || '⭐',
-                title: featureMatch[1].split(' • ')[0] || 'Característica',
-                description: featureMatch[1].split(' • ')[1] || 'Descripción'
-              })
+          
+          // Buscar características con emojis (🍏🚚🌱⭐ o cualquier emoji)
+          while (i < lines.length && i < index + 10) { // Máximo 10 líneas después
+            const featureLine = lines[i]
+            if (featureLine && featureLine.match(/^[🍏🚚🌱⭐✨🎯🔥💎🌟]/)) {
+              const emojiMatch = featureLine.match(/^([🍏🚚🌱⭐✨🎯🔥💎🌟])\s*(.+)$/)
+              if (emojiMatch) {
+                const featureText = emojiMatch[2]
+                // Separar título y descripción por • o |
+                const parts = featureText.split(/[•|]/)
+                features.push({
+                  icon: emojiMatch[1],
+                  title: parts[0]?.trim() || 'Característica',
+                  description: parts[1]?.trim() || 'Descripción de la característica'
+                })
+                console.log("✅ PARSER: Característica extraída:", features[features.length - 1])
+              }
+            } else if (featureLine && featureLine.match(/^[0-9]\./)) {
+              // También aceptar formato 1. Título • Descripción
+              const numberedMatch = featureLine.match(/^[0-9]\.\s*(.+)$/)
+              if (numberedMatch) {
+                const parts = numberedMatch[1].split(/[•|]/)
+                features.push({
+                  icon: '⭐',
+                  title: parts[0]?.trim() || 'Característica',
+                  description: parts[1]?.trim() || 'Descripción de la característica'
+                })
+                console.log("✅ PARSER: Característica numerada extraída:", features[features.length - 1])
+              }
+            } else if (!featureLine.match(/^[0-9⃣🔥💎🌟]/) && featureLine.length < 5) {
+              break // Detenerse si encontramos una nueva sección
             }
             i++
           }
           data.features = features
         }
         
-        // Extraer promoción
-        if (line.includes('4⃣') || line.includes('Promocional')) {
-          const promoMatch = lines[index + 1]?.match(/^(.+)$/)
-          data.promoTitle = promoMatch?.[1] || 'Promoción especial'
+        // Extraer promoción (4⃣ Bloque Promocional)
+        if (line.includes('4⃣') || line.toLowerCase().includes('promocional') || line.toLowerCase().includes('promoción')) {
+          console.log("🎯 PARSER: Encontrada Promoción en línea:", line)
+          // Buscar título de promoción en las siguientes 3 líneas
+          for (let i = 1; i <= 3; i++) {
+            const promoLine = lines[index + i]
+            if (promoLine && promoLine.length > 5 && !promoLine.match(/^[0-9⃣🔥💎🌟]/)) {
+              data.promoTitle = promoLine.trim()
+              console.log("✅ PARSER: Promoción extraída:", data.promoTitle)
+              break
+            }
+          }
         }
         
-        // Extraer testimonios
-        if (line.includes('5⃣') || line.includes('Testimonios')) {
+        // Extraer testimonios (5⃣ Testimonios con ⭐⭐⭐⭐⭐)
+        if (line.includes('5⃣') || line.toLowerCase().includes('testimonios')) {
+          console.log("🎯 PARSER: Encontrados Testimonios en línea:", line)
           const testimonials = []
-          let i = index + 2
-          while (i < lines.length && lines[i]?.includes('⭐')) {
-            if (lines[i]?.includes('—')) {
-              const textMatch = lines[i - 1]?.match(/^"(.+)"$/)
-              const authorMatch = lines[i]?.match(/—\s*(.+)$/)
-              if (textMatch && authorMatch) {
-                testimonials.push({
-                  name: authorMatch[1],
-                  role: 'Cliente',
-                  text: textMatch[1],
-                  rating: 5
-                })
+          let i = index + 1
+          
+          while (i < lines.length && i < index + 15) { // Máximo 15 líneas después
+            const testimonialLine = lines[i]
+            
+            // Buscar citas entre comillas
+            if (testimonialLine && testimonialLine.includes('"')) {
+              const textMatch = testimonialLine.match(/^"(.+)"$/)
+              if (textMatch) {
+                // Buscar autor en la siguiente línea
+                const authorLine = lines[i + 1]
+                if (authorLine && (authorLine.includes('—') || authorLine.includes('-'))) {
+                  const authorMatch = authorLine.match(/[—-]\s*(.+)$/)
+                  if (authorMatch) {
+                    testimonials.push({
+                      name: authorMatch[1].trim(),
+                      role: 'Cliente',
+                      text: textMatch[1],
+                      rating: 5
+                    })
+                    console.log("✅ PARSER: Testimonio extraído:", testimonials[testimonials.length - 1])
+                    i++ // Saltar la línea del autor
+                  }
+                }
               }
+            }
+            // Detenerse si encontramos una nueva sección
+            else if (testimonialLine && testimonialLine.match(/^[0-9⃣🔥💎🌟]/)) {
+              break
             }
             i++
           }
           data.testimonials = testimonials
         }
         
-        // Extraer CTA final
-        if (line.includes('6⃣') || line.includes('CTA Final')) {
-          const ctaMatch = lines[index + 1]?.match(/^(.+)$/)
-          data.ctaTitle = ctaMatch?.[1] || 'Contacto'
+        // Extraer CTA final (6⃣ Bloque CTA Final)
+        if (line.includes('6⃣') || line.toLowerCase().includes('cta final') || line.toLowerCase().includes('contacto final')) {
+          console.log("🎯 PARSER: Encontrado CTA Final en línea:", line)
+          // Buscar título de CTA en las siguientes 3 líneas
+          for (let i = 1; i <= 3; i++) {
+            const ctaLine = lines[index + i]
+            if (ctaLine && ctaLine.length > 5 && !ctaLine.match(/^[0-9⃣🔥💎🌟]/)) {
+              data.ctaTitle = ctaLine.trim()
+              console.log("✅ PARSER: CTA extraído:", data.ctaTitle)
+              break
+            }
+          }
         }
       })
       
+      console.log("🎯 PARSER: Datos finales extraídos:", data)
       return data
     }
     
     const landingData = extractLandingData(businessInfo.landingContent || '')
     console.log("🔍 LANDING ASSISTANT: Datos extraídos dinámicamente:", landingData)
     
-    console.log("🚀 LANDING ASSISTANT: Iniciando generación con datos dinámicos")
+    console.log("🚀 LANDING ASSISTANT: Iniciando generación con datos dinámicos - VERSIÓN 3.2.0")
     
-    // Convert business info a bloques para la landing page
+    // 🧠 BLOQUES INTELIGENTES 100% DINÁMICOS - VERSIÓN 3.2.0
     const blocks = [
-      // 1 - Hero Slide Interactivo
+      // 1⃣ Hero Slide - Usa título dinámico del chat
       {
-        id: 'hero-slide-1',
+        id: 'hero-slide-dynamic-1',
         type: 'hero-slide',
         content: {
           slides: [
             {
-              id: 'slide-1',
+              id: 'slide-main',
               backgroundImage: '',
-              title: landingData.heroTitle || businessInfo.nombre_negocio || 'Mi Empresa',
-              subtitle: landingData.heroSubtitle || businessInfo.diferencial || 'Líder en el sector',
-              buttonText: businessInfo.cta_principal || 'Conocer Más',
+              title: landingData.heroTitle || 'Tu Negocio',
+              subtitle: landingData.heroSubtitle || 'Líder en el sector',
+              buttonText: 'Conocer Más',
               buttonType: 'external' as const,
-              buttonTarget: '#',
+              buttonTarget: '#features',
               textColor: 'light' as const,
               imageFilter: 'none' as const
             }
@@ -129,9 +212,9 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
           }
         }
       },
-      // 2 - Bloque Refuerzo
+      // 2⃣ Bloque de Introducción - Usa texto dinámico del chat
       {
-        id: 'reinforcement-1',
+        id: 'introduction-dynamic-1',
         type: 'reinforcement',
         content: {
           title: 'Introducción',
@@ -144,28 +227,28 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
           }
         }
       },
-      // 3 - Características Principales
+      // 3⃣ Características Principales - Extrae características dinámicas con emojis del chat
       {
-        id: 'features-1',
+        id: 'features-dynamic-1',
         type: 'features',
         content: {
           title: 'Características Principales',
           subtitle: 'Lo que nos hace únicos',
-          features: landingData.features || [
+          features: landingData.features && landingData.features.length > 0 ? landingData.features : [
             {
               icon: '⭐',
-              title: 'Característica 1',
-              description: 'Descripción de la característica'
+              title: 'Característica Principal',
+              description: 'Descripción de la característica principal'
             },
             {
               icon: '🎯',
-              title: 'Característica 2', 
-              description: 'Descripción de la característica'
+              title: 'Ventaja Competitiva', 
+              description: 'Lo que nos diferencia de los demás'
             },
             {
               icon: '📍',
-              title: 'Característica 3',
-              description: 'Descripción de la característica'
+              title: 'Servicio Excepcional',
+              description: 'Calidad garantizada en cada detalle'
             }
           ],
           styles: {
