@@ -11,6 +11,7 @@ import { ModernNavigation } from '@/components/ModernNavigation'
 import { LandingAssistant } from '@/components/LandingAssistant'
 import { LandingGenerator } from '@/components/LandingGenerator'
 import { LandingPreview } from '@/components/LandingPreview'
+import { LandingDataBridge } from '@/components/LandingDataBridge'
 import { Button } from '@/components/ui/button'
 import { BlockType, TemplateType } from '@/types'
 import { demoTemplates, getDemoTemplateWithCacheBust } from '@/data/demoTemplates'
@@ -46,6 +47,8 @@ export default function Home() {
   const [showAssistant, setShowAssistant] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
   const [businessInfo, setBusinessInfo] = useState<any>(null)
+  const [processedContent, setProcessedContent] = useState<any>(null)
+  const [bridgeBlocks, setBridgeBlocks] = useState<any[]>([])
   const [showGenerator, setShowGenerator] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const { theme } = useTheme()
@@ -112,19 +115,44 @@ export default function Home() {
   // Función para generar landing con IA
   const handleGenerateLanding = async (prompt: string, processedContent?: any, blocks?: any) => {
     try {
-      console.log('handleGenerateLanding called with prompt:', prompt)
-      console.log('Processed content:', processedContent)
-      console.log('Blocks provided:', blocks ? blocks.length : 'none')
-      console.log('Current state - isGenerating:', isGenerating, 'showGenerator:', showGenerator)
+      console.log("🚀 PAGE.TSX: handleGenerateLanding llamado con:")
+      console.log("   - Prompt:", prompt)
+      console.log("   - Processed content:", processedContent)
+      console.log("   - Blocks:", blocks ? `${blocks.length} bloques` : 'ninguno')
+      console.log("   - Estado actual: isGenerating=", isGenerating, "showGenerator=", showGenerator)
       
       setIsGenerating(true)
       setShowGenerator(true)
       
       // Si se proporcionan bloques, usarlos directamente
       if (blocks && Array.isArray(blocks) && blocks.length > 0) {
-        console.log('Using provided blocks:', blocks.length, 'blocks')
+        console.log("📦 PAGE.TSX: Usando bloques proporcionados directamente:", blocks.length, "bloques")
+        
+        // Parsear businessInfo del prompt (que viene como JSON string)
+        let parsedBusinessInfo = {}
+        try {
+          if (prompt) {
+            parsedBusinessInfo = JSON.parse(prompt)
+            console.log("📋 PAGE.TSX: BusinessInfo parseado del prompt:", parsedBusinessInfo)
+          }
+        } catch (error) {
+          console.warn("⚠️ PAGE.TSX: No se pudo parsear businessInfo del prompt:", error)
+        }
+        
+        // Guardar datos para el bridge
+        const finalBusinessInfo = processedContent?.businessInfo || parsedBusinessInfo
+        setBusinessInfo(finalBusinessInfo)
+        setProcessedContent(processedContent)
+        setBridgeBlocks(blocks)
+        
+        console.log("💾 PAGE.TSX: Datos guardados para bridge:", {
+          businessInfo: finalBusinessInfo,
+          hasProcessedContent: !!processedContent,
+          bridgeBlocksCount: blocks.length
+        })
+        
+        // Establecer bloques en el canvas
         setBlocks(blocks)
-        setBusinessInfo(processedContent?.businessInfo || {})
         
         // Simular progreso rápido
         dispatchProgressEvent('finalizing', 100, '¡Landing generada con éxito!', 'complete')
@@ -133,6 +161,7 @@ export default function Home() {
         
         setIsGenerating(false)
         setShowAssistant(false)
+        console.log("✅ PAGE.TSX: Proceso completado con bloques directos")
         return
       }
       
@@ -204,8 +233,12 @@ export default function Home() {
             
             // Establecer los bloques generados
             console.log('Setting generated blocks:', result.blocks.length, 'blocks')
+            
+            // Guardar datos para el bridge
             setBlocks(result.blocks)
             setBusinessInfo(result.businessInfo)
+            setProcessedContent(result.processedContent || {})
+            setBridgeBlocks(result.blocks)
             
             // Enviar evento de finalización
             dispatchProgressEvent('finalizing', 100, '¡Landing generada con éxito!', 'complete')
@@ -386,6 +419,23 @@ export default function Home() {
         onComplete={() => {
           setShowGenerator(false)
           setIsGenerating(false)
+        }}
+      />
+      
+      {/* Landing Data Bridge - Conecta los datos entre pantallas */}
+      <LandingDataBridge
+        businessInfo={businessInfo}
+        processedContent={processedContent}
+        blocks={bridgeBlocks}
+        onDataReady={(landingData) => {
+          console.log("✅ PAGE.TSX: Bridge - Datos listos para construcción:")
+          console.log("   - Business Name:", landingData.businessInfo?.nombre_negocio)
+          console.log("   - Total Blocks:", landingData.blocks?.length)
+          console.log("   - Timestamp:", landingData.timestamp)
+          console.log("   - Status:", landingData.status)
+        }}
+        onComplete={() => {
+          console.log("🎉 PAGE.TSX: Bridge - Proceso completado, pasando al generador")
         }}
       />
       

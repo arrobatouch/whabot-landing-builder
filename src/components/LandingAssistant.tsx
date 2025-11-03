@@ -10,6 +10,8 @@ interface LandingAssistantProps {
 
 export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating = false }: LandingAssistantProps) {
   const handleBusinessInfoComplete = (businessInfo: any) => {
+    console.log("🚀 LANDING ASSISTANT: Iniciando generación con businessInfo:", businessInfo)
+    
     // Convert business info a bloques para la landing page
     const blocks = [
       // 1 - Hero Slide Interactivo
@@ -486,7 +488,13 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
       }
     }
     
+    console.log("📦 LANDING ASSISTANT: Bloques generados:", blocks.length, "bloques")
+    console.log("📋 LANDING ASSISTANT: Primer bloque título:", blocks[0]?.content?.title)
+    console.log("📄 LANDING ASSISTANT: ProcessedContent creado:", processedContent)
+    
+    console.log("📤 LANDING ASSISTANT: Enviando datos con onGenerateLanding...")
     onGenerateLanding(JSON.stringify(businessInfo), processedContent, blocks)
+    console.log("✅ LANDING ASSISTANT: Datos enviados exitosamente")
   }
 
   return (
