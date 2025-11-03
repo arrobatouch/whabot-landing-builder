@@ -9,10 +9,48 @@ interface LandingAssistantProps {
 }
 
 export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating = false }: LandingAssistantProps) {
-  const handleBusinessInfoComplete = (businessInfo: any) => {
+  const handleBusinessInfoComplete = async (businessInfo: any) => {
     console.log("🎯 LANDING ASSISTANT: Recibiendo businessInfo:", businessInfo)
     console.log("📋 LANDING ASSISTANT: landingContent recibido:", businessInfo.landingContent?.substring(0, 100) + "...")
     
+    // 🎯 FUNCIÓN PARA BUSCAR IMÁGENES DINÁMICAS
+    const searchDynamicImages = async (keyword: string): Promise<string[]> => {
+      try {
+        const searchResponse = await fetch('/api/images/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: keyword,
+            count: 3,
+            orientation: 'landscape'
+          }),
+        })
+        
+        if (searchResponse.ok) {
+          const searchResult = await searchResponse.json()
+          if (searchResult.success && searchResult.images && searchResult.images.length > 0) {
+            const images = searchResult.images.map((img: any) => img.url)
+            console.log("✅ PARSER: Imágenes dinámicas encontradas:", images.length, "imágenes para", keyword)
+            return images
+          } else {
+            throw new Error('No se encontraron imágenes en la API')
+          }
+        } else {
+          throw new Error('Error en la API de imágenes')
+        }
+      } catch (error) {
+        console.warn("⚠️ PARSER: Error buscando imágenes dinámicas, usando fallback:", error)
+        // Fallback: usar imágenes genéricas pero relacionadas al keyword
+        return [
+          `https://source.unsplash.com/1920x1080/?${keyword},business`,
+          `https://source.unsplash.com/1920x1080/?${keyword},professional`,
+          `https://source.unsplash.com/1920x1080/?${keyword},modern`
+        ]
+      }
+    }
+
     // 🎯 EXTRAER DATOS DINÁMICOS DEL landingContent - VERSIÓN 3.2.0
     const extractLandingData = (content: string) => {
       const lines = content.split('\n').filter(line => line.trim())
@@ -57,16 +95,11 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
             }
           }
           
-          // Si no hay imágenes en el contenido, usar imágenes por defecto del negocio
+          // Guardar palabras clave para búsqueda dinámica después
           if (heroImages.length === 0) {
-            // Imágenes por defecto para diferentes tipos de negocios
-            const defaultImages = [
-              'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&h=1080&fit=crop', // Negocio/Empresa
-              'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop', // Profesional
-              'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&h=1080&fit=crop'  // Moderno
-            ]
-            data.heroImages = defaultImages
-            console.log("✅ PARSER: Usando imágenes por defecto:", defaultImages)
+            const businessKeywords = content.toLowerCase().match(/fruta|verdura|frutería|verduría|tienda|mercado|alimento|fresco|orgánico|natural|comida|salud|restaurante|hotel|departamento|casa|auto|ropa|tecnología|educación|gimnasio|consultoría|servicio/gi) || []
+            data.imageKeyword = businessKeywords[0] || data.heroTitle?.toLowerCase() || 'negocio'
+            console.log("🔍 PARSER: Palabra clave para búsqueda dinámica:", data.imageKeyword)
           } else {
             data.heroImages = heroImages
           }
@@ -201,6 +234,13 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
     }
     
     const landingData = extractLandingData(businessInfo.landingContent || '')
+    
+    // Buscar imágenes dinámicas si es necesario
+    if (landingData.imageKeyword && !landingData.heroImages) {
+      console.log("🔍 BUSCANDO IMÁGENES DINÁMICAS PARA:", landingData.imageKeyword)
+      landingData.heroImages = await searchDynamicImages(landingData.imageKeyword)
+      console.log("✅ IMÁGENES DINÁMICAS LISTAS:", landingData.heroImages)
+    }
     console.log("🔍 LANDING ASSISTANT: Datos extraídos dinámicamente:", landingData)
     
     console.log("🚀 LANDING ASSISTANT: Iniciando generación con datos dinámicos - VERSIÓN 3.2.0")
