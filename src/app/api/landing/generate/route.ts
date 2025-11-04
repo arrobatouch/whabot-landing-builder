@@ -35,10 +35,29 @@ export async function POST(request: Request) {
             ]
           }
 
-          return {
+          // Crear estructura de slides correcta
+          const slides = images.map((image, index) => ({
+            id: `slide-${index + 1}`,
+            backgroundImage: image,
             title: info.name || 'Tu empresa destacada',
             subtitle: info.description || 'Mostrá lo mejor de tu negocio con estilo.',
-            images
+            buttonText: 'Conocer más',
+            buttonType: 'external' as const,
+            buttonTarget: '#',
+            textColor: 'light' as const,
+            imageFilter: 'none' as const
+          }))
+
+          return {
+            slides,
+            navigationStyle: 'dots' as const,
+            autoPlay: true,
+            autoPlayInterval: 5000,
+            transitionType: 'fade' as const,
+            transitionSpeed: 500,
+            height: 'viewport' as const,
+            marginTop: 0,
+            marginBottom: 0
           }
         }
       },

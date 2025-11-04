@@ -1,17 +1,24 @@
 export function extractBusinessInfo(text: string) {
   const info: any = {}
   
-  // Detectar nombre de negocio (palabras clave como "se llama", "negocio", "empresa", "proyecto")
+  // Patrón especial para "llamada" con palabras compuestas
+  const llamadaMatch = text.match(/llamada?\s+([A-Za-z]+(?:[A-Z][a-z]+)*)/i)
+  if (llamadaMatch) {
+    info.nombre_negocio = llamadaMatch[1].trim()
+  }
+  
+  // Detectar nombre de negocio (palabras clave como "se llama", "negocio", "empresa", "proyecto", "llamada")
   const namePatterns = [
-    /se llama\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+)/i,
-    /negocio\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+)/i,
-    /empresa\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+)/i,
-    /proyecto\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+)/i
+    /se llama\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)/i,
+    /negocio\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)/i,
+    /empresa\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)/i,
+    /proyecto\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)/i,
+    /llamada?\s+([A-Z][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)/i  // Solo capturar palabras que empiezan con mayúscula
   ]
   
   for (const pattern of namePatterns) {
     const match = text.match(pattern)
-    if (match) {
+    if (match && !info.nombre_negocio) {  // Solo procesar si no se encontró antes
       info.nombre_negocio = match[1].trim()
       break
     }
