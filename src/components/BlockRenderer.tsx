@@ -32,6 +32,7 @@ interface BlockRendererProps {
   block: BlockType
   onContentChange?: (blockId: string, newContent: any) => void
   blocks?: BlockType[] // Para pasar los bloques actuales al NavigationBlock
+  isPreview?: boolean // Nuevo prop para modo preview
 }
 
 // Función para detectar imágenes en el contenido de un bloque
@@ -112,7 +113,7 @@ function BlockErrorBoundary({ blockType, error, onRetry }: {
   )
 }
 
-export function BlockRenderer({ block, onContentChange, blocks = [] }: BlockRendererProps) {
+export function BlockRenderer({ block, onContentChange, blocks = [], isPreview = false }: BlockRendererProps) {
   const handleContentChange = (newContent: any) => {
     if (onContentChange) {
       onContentChange(block.id, newContent)
@@ -158,70 +159,70 @@ export function BlockRenderer({ block, onContentChange, blocks = [] }: BlockRend
       
       switch (block.type) {
         case 'navigation':
-          renderedBlock = <NavigationBlock block={block} onContentChange={handleContentChange} blocks={blocks} />
+          renderedBlock = <NavigationBlock block={block} onContentChange={isPreview ? undefined : handleContentChange} blocks={blocks} />
           break
         case 'hero':
-          renderedBlock = <HeroBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'features':
-          renderedBlock = <FeaturesBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <FeaturesBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'testimonials':
-          renderedBlock = <TestimonialsBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <TestimonialsBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'cta':
-          renderedBlock = <CtaBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <CtaBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'footer':
-          renderedBlock = <FooterBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <FooterBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'reinforcement':
-          renderedBlock = <ReinforcementBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <ReinforcementBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'hero-split':
-          renderedBlock = <HeroSplitBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroSplitBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'pricing':
-          renderedBlock = <PricingBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <PricingBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'stats':
-          renderedBlock = <StatsBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <StatsBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'timeline':
-          renderedBlock = <TimelineBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <TimelineBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'faq':
-          renderedBlock = <FaqBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <FaqBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'image':
-          renderedBlock = <ImageBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <ImageBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'process':
-          renderedBlock = <ProcessBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <ProcessBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'product-cart':
-          renderedBlock = <ProductCartBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <ProductCartBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'product-features':
-          renderedBlock = <ProductFeaturesBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <ProductFeaturesBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'whatsapp-contact':
-          renderedBlock = <WhatsAppContactBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <WhatsAppContactBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'social-media':
-          renderedBlock = <SocialMediaBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <SocialMediaBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'hero-slide':
-          renderedBlock = <HeroSlideBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroSlideBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'youtube':
-          renderedBlock = <HeroYouTubeBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroYouTubeBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'countdown':
-          renderedBlock = <HeroCountdownBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroCountdownBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         case 'hero-banner':
-          renderedBlock = <HeroBannerBlock content={block.content} onContentChange={handleContentChange} />
+          renderedBlock = <HeroBannerBlock content={block.content} onContentChange={isPreview ? undefined : handleContentChange} />
           break
         default:
           console.warn('Unknown block type:', block.type)

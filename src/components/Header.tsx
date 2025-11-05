@@ -205,17 +205,6 @@ export function Header({
           
           <ThemeToggle />
           
-          {/* Admin Panel - Hidden in plain sight */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => window.open('/admin', '_blank')}
-            className="text-muted-foreground hover:text-foreground"
-            title="Panel de Administración"
-          >
-            <Shield className="h-4 w-4" />
-          </Button>
-          
           <Button 
             variant="outline" 
             size="sm"
