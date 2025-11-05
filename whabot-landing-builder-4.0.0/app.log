@@ -1,0 +1,129 @@
+
+> whabot-landing-builder@3.5.0 start
+> NODE_ENV=production tsx server.ts 2>&1 | tee server.log
+
+> Ready on http://0.0.0.0:3000
+> Socket.IO server running at ws://0.0.0.0:3000/api/socketio
+Sending request to AnythingLLM... {
+  baseUrl: 'https://orus.teccia.com.ar',
+  workspace: 'chat-landing',
+  hasApiKey: true,
+  prompt: 'prueba trae frutas ...'
+}
+Trying endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+Success with endpoint: https://orus.teccia.com.ar/api/v1/workspace/chat-landing/chat
+AnythingLLM response text: {"id":"5112262a-fb74-4dcf-9410-2ddf7c2826f3","type":"textResponse","close":true,"error":null,"chatId":1208,"textResponse":"Claro, aquí te dejo el contenido para la landing de Fruticom con foco en frut
+AnythingLLM response: { success: true, hasContent: true }
+Searching images for: { query: 'fruta', industry: undefined, count: 3 }
+[INFO] api:api_images_search_start {
+  timestamp: '2025-11-05T13:26:26.711Z',
+  sessionId: 'sess_1762349063528_3vkd5l63i',
+  level: 'info',
+  operation: 'api_images_search_start',
+  service: 'api',
+  metadata: {
+    endpoint: '/api/images/search',
+    method: 'POST',
+    success: undefined,
+    operation: 'complete_search',
+    strategy: 'unsplash_first_fallback'
+  },
+  request: { query: 'fruta', industry: undefined, count: 3 },
+  response: null,
+  duration: undefined,
+  error: undefined
+}
+Searching Unsplash with term: fruta
+[INFO] api:api_unsplash_search_start {
+  timestamp: '2025-11-05T13:26:26.712Z',
+  sessionId: 'sess_1762349063528_3vkd5l63i',
+  level: 'info',
+  operation: 'api_unsplash_search_start',
+  service: 'api',
+  metadata: {
+    endpoint: 'https://api.unsplash.com/search/photos',
+    method: 'GET',
+    success: undefined,
+    provider: 'unsplash',
+    originalQuery: 'fruta',
+    searchTerm: 'fruta',
+    requestedCount: 3
+  },
+  request: { query: 'fruta', searchTerm: 'fruta', count: 3 },
+  response: null,
+  duration: undefined,
+  error: undefined
+}
+[INFO] image:image_search {
+  timestamp: '2025-11-05T13:26:26.756Z',
+  sessionId: 'sess_1762349063528_3vkd5l63i',
+  level: 'info',
+  operation: 'image_search',
+  service: 'image',
+  metadata: {
+    query: 'fruta',
+    industry: undefined,
+    provider: 'unsplash',
+    imageCount: 3,
+    imageUrls: undefined,
+    success: true
+  },
+  duration: 32,
+  error: undefined,
+  provider: 'unsplash',
+  request: null,
+  response: null
+}
+[INFO] api:api_unsplash_search_success {
+  timestamp: '2025-11-05T13:26:26.757Z',
+  sessionId: 'sess_1762349063528_3vkd5l63i',
+  level: 'info',
+  operation: 'api_unsplash_search_success',
+  service: 'api',
+  metadata: {
+    endpoint: 'https://api.unsplash.com/search/photos',
+    method: 'GET',
+    success: true,
+    provider: 'unsplash',
+    originalQuery: 'fruta',
+    searchTerm: 'fruta',
+    resultsCount: 3
+  },
+  request: null,
+  response: { totalResults: 3, requestedCount: 3, searchTerm: 'fruta' },
+  duration: 32,
+  error: undefined
+}
+[INFO] api:api_images_search_success {
+  timestamp: '2025-11-05T13:26:26.757Z',
+  sessionId: 'sess_1762349063528_3vkd5l63i',
+  level: 'info',
+  operation: 'api_images_search_success',
+  service: 'api',
+  metadata: {
+    endpoint: '/api/images/search',
+    method: 'POST',
+    success: true,
+    provider: 'unsplash',
+    originalQuery: 'fruta',
+    industry: undefined,
+    requestedCount: 3,
+    returnedCount: 3,
+    imageUrls: [
+      'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4MjI5NTh8MHwxfHNlYXJjaHwxfHxmcnV0YXxlbnwwfHx8fDE3NjIzMTE4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080&v=1762349186756_207766',
+      'https://images.unsplash.com/photo-1559181567-c3190ca9959b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4MjI5NTh8MHwxfHNlYXJjaHwyfHxmcnV0YXxlbnwwfHx8fDE3NjIzMTE4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080&v=1762349186756_132324',
+      'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4MjI5NTh8MHwxfHNlYXJjaHwzfHxmcnV0YXxlbnwwfHx8fDE3NjIzMTE4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080&v=1762349186756_982561'
+    ]
+  },
+  request: null,
+  response: {
+    success: true,
+    images: 3,
+    total: 3,
+    query: 'fruta',
+    industry: 'general',
+    source: 'unsplash'
+  },
+  duration: 47,
+  error: undefined
+}
