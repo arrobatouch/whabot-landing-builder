@@ -375,6 +375,7 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
         content: {
           title: 'Características Principales',
           subtitle: 'Lo que nos hace diferentes',
+          backgroundImage: landingData.sectionImages?.features?.[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&h=1080&fit=crop',
           features: (landingData.features && landingData.features.length > 0) ? landingData.features : [
             {
               icon: '🚀',
@@ -606,13 +607,30 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
           title: 'Lo que dicen nuestros clientes',
           subtitle: 'Experiencias reales de quienes confían en nosotros',
           backgroundImage: landingData.sectionImages?.testimonials?.[0] || '',
-          testimonials: (landingData.testimonials || []).map((t: any, i: number) => ({
-            name: t.name || t.author || 'Cliente',
-            role: t.role || 'Cliente',
-            company: t.company || '',
-            content: t.content || t.text || '',
-            avatar: landingData.sectionImages?.testimonials?.[i + 1] || ''
-          })),
+          testimonials: (landingData.testimonials && landingData.testimonials.length > 0) 
+            ? landingData.testimonials.map((t: any, i: number) => ({
+                name: t.name || t.author || 'Cliente',
+                role: t.role || 'Cliente',
+                company: t.company || '',
+                content: t.content || t.text || '',
+                avatar: landingData.sectionImages?.testimonials?.[i + 1] || ''
+              }))
+            : [
+                {
+                  name: 'María González',
+                  role: 'Cliente Satisfecha',
+                  company: businessInfo.nombre_negocio || 'Nuestra Empresa',
+                  content: `Excelente servicio y atención al detalle. ${businessInfo.rubro ? 'Los mejores en ' + businessInfo.rubro : 'Totalmente recomendado'}.`,
+                  avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face'
+                },
+                {
+                  name: 'Juan Pérez',
+                  role: 'Cliente Frecuente',
+                  company: businessInfo.nombre_negocio || 'Nuestra Empresa',
+                  content: `Profesionalismo y calidad garantizada. ${businessInfo.diferencial || 'Siempre superan mis expectativas'}.`,
+                  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+                }
+              ],
           styles: {
             backgroundColor: 'bg-background',
             paddingY: 'py-16',
@@ -710,7 +728,7 @@ export function LandingAssistant({ onGenerateLanding, onManualMode, isGenerating
           whatsappNumber: '+1234567890', // Este debería ser extraído de la info del negocio
           defaultMessage: `Hola, estoy interesado en ${businessInfo.nombre_negocio || 'sus servicios'}.`,
           buttonText: 'Contactar por WhatsApp',
-          leftImage: '',
+          leftImage: landingData.sectionImages?.features?.[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&h=1080&fit=crop',
           leftImageAlt: 'Imagen de contacto',
           styles: {
             backgroundColor: 'bg-background',
